@@ -16,26 +16,29 @@
     <Filter Include="Header Files\common">
       <UniqueIdentifier>{3f86b80f-1bb1-4905-ab86-232036e6d4b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\common">
+      <UniqueIdentifier>{52370615-2af7-4cbd-a293-dd1ec101d2bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\common\display.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\common\DisplayManager.cpp">
+      <Filter>Source Files\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\config.h">
       <Filter>Header Files\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\common\display.h">
-      <Filter>Header Files\common</Filter>
-    </ClInclude>
     <ClInclude Include="..\common\error_codes.h">
       <Filter>Header Files\common</Filter>
     </ClInclude>
     <ClInclude Include="..\common\scope_guard.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\DisplayManager.h">
       <Filter>Header Files\common</Filter>
     </ClInclude>
   </ItemGroup>

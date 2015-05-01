@@ -142,13 +142,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\common\display.cpp" />
+    <ClCompile Include="..\common\DisplayManager.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\common\DisplayManager.h" />
     <ClInclude Include="..\common\error_codes.h" />
     <ClInclude Include="..\common\config.h" />
-    <ClInclude Include="..\common\display.h" />
     <ClInclude Include="..\common\scope_guard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
