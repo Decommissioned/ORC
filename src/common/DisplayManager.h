@@ -23,11 +23,7 @@ namespace ORC_NAMESPACE
                 static void SetVisible(uint32 windowID, bool visible);
                 static void Present(uint32 windowID);
 
-                static bool ExitRequested();
-
-        private:
-
-                static bool _exit_requested;
+                static bool ExitRequested;
 
         };
 

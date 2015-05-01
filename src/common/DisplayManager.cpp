@@ -17,18 +17,30 @@ namespace ORC_NAMESPACE
 
         static std::vector<std::pair<uint32, void*>> _windows;
 
+        //////////////////////////////////////////////////////////////////////////
+
+        static void WindowEventHandler(SDL_WindowEvent& e)
+        {
+                switch (e.event)
+                {
+                case SDL_WINDOWEVENT_CLOSE:
+                        DisplayManager::DestroyWindow(e.windowID);
+                        break;
+                }
+        }
+
         void DisplayManager::EnterMessageLoop()
         {
                 bool quit = false;
                 SDL_Event e;
-                while (!_exit_requested)
+                while (!ExitRequested)
                 {
                         SDL_WaitEvent(&e);
                         switch (e.type)
                         {
                         case SDL_QUIT: quit = true;
                                 break;
-                        case SDL_WINDOWEVENT:
+                        case SDL_WINDOWEVENT: WindowEventHandler(e.window);
                                 break;
                         }
                 }
@@ -87,12 +99,10 @@ namespace ORC_NAMESPACE
                 }
 
                 if (_ref_count == 0)
+                {
                         SDL_QuitSubSystem(SDL_INIT_VIDEO);
-        }
-
-        bool DisplayManager::ExitRequested()
-        {
-                return _exit_requested;
+                        ExitRequested = true;
+                }
         }
 
         void DisplayManager::SetVisible(uint32 windowID, bool visible)
@@ -135,6 +145,6 @@ namespace ORC_NAMESPACE
                 }
         }
 
-        bool DisplayManager::_exit_requested = false;
+        bool DisplayManager::ExitRequested = false;
 
 };
