@@ -14,9 +14,9 @@ namespace ORC_NAMESPACE
                 M.lock();
                 DEFER(M.unlock());
 
-                if (ref_count == 0) // first instance
+                if (_ref_count == 0) // first instance
                 {
-                        ref_count++;
+                        _ref_count++;
 
                         if (SDL_InitSubSystem(SDL_INIT_VIDEO) != 0)
                                 throw Error::SDL_VIDEO_INITIALIZATION;
@@ -33,10 +33,10 @@ namespace ORC_NAMESPACE
 
                 }
 
-                wnd_ = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+                _wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 
-                if (!wnd_) throw Error::SDL_WINDOW_CREATION;
-                wndID = SDL_GetWindowID(static_cast<SDL_Window*>(wnd_));
+                if (!_wnd) throw Error::SDL_WINDOW_CREATION;
+                _wndID = SDL_GetWindowID(static_cast<SDL_Window*>(_wnd));
                 
                 if (create_context)
                 {
@@ -50,40 +50,40 @@ namespace ORC_NAMESPACE
 
         Display::~Display()
         {
-                ref_count--;
+                _ref_count--;
 
-                if (glContext_)
-                        SDL_GL_DeleteContext(glContext_);
+                if (_glContext)
+                        SDL_GL_DeleteContext(_glContext);
 
-                if (wnd_)
+                if (_wnd)
                 {
-                        SDL_Window* wnd = static_cast<SDL_Window*>(wnd_);
+                        SDL_Window* wnd = static_cast<SDL_Window*>(_wnd);
                         SDL_DestroyWindow(wnd);
                 }
 
-                if (ref_count == 0)
+                if (_ref_count == 0)
                         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         }
 
         void Display::Present() const
         {
-                SDL_Window* wnd = static_cast<SDL_Window*>(wnd_);
+                SDL_Window* wnd = static_cast<SDL_Window*>(_wnd);
                 SDL_GL_SwapWindow(wnd);
         }
 
         void Display::SetVisible(bool visible)
         {
-                SDL_Window* wnd = static_cast<SDL_Window*>(wnd_);
+                SDL_Window* wnd = static_cast<SDL_Window*>(_wnd);
                 if (visible) SDL_ShowWindow(wnd);
                 else SDL_HideWindow(wnd);
         }
 
         Error Display::CreateOpenGLContext()
         {
-                SDL_Window* wnd = static_cast<SDL_Window*>(wnd_);
+                SDL_Window* wnd = static_cast<SDL_Window*>(_wnd);
                 
-                glContext_ = SDL_GL_CreateContext(wnd);
-                if (!glContext_)
+                _glContext = SDL_GL_CreateContext(wnd);
+                if (!_glContext)
                         return Error::OPENGL_INITIALIZATION;
 
                 if (glewInit() != GLEW_OK)
@@ -94,9 +94,9 @@ namespace ORC_NAMESPACE
 
         uint32 Display::ID() const
         {
-                return wndID;
+                return _wndID;
         }
 
-        uint32 Display::ref_count = 0;
+        uint32 Display::_ref_count = 0;
 
 };

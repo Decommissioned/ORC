@@ -23,11 +23,11 @@ namespace ORC_NAMESPACE
 
         private:
 
-                void* glContext_;
-                void* wnd_;
+                void* _glContext;
+                void* _wnd;
 
-                static uint32 ref_count;
-                uint32 wndID;
+                static uint32 _ref_count;
+                uint32 _wndID;
 
         };
 
