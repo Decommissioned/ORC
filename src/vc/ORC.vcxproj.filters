@@ -33,6 +33,9 @@
     <ClCompile Include="..\common\shader.cpp">
       <Filter>Source Files\common</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\mesh.cpp">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\config.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files\common</Filter>
     </ClInclude>
     <ClInclude Include="..\common\shader.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\shader_slots.h">
       <Filter>Header Files\common</Filter>
     </ClInclude>
   </ItemGroup>
