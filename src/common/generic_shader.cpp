@@ -4,11 +4,9 @@ namespace ORC_NAMESPACE
 {
 
         GenericShader::GenericShader()
-                : Shader("vertex.shader", "fragment.shader")
-        {
-                BindAttribute(VERTEX_POSITION, "position");
-                BindAttribute(VERTEX_UV, "uv");
-        }
+                : Shader("vertex.shader", "fragment.shader",
+                {std::make_pair(VERTEX_POSITION,"position"), std::make_pair(VERTEX_UV, "uv")})
+        {}
 
         GenericShader::~GenericShader()
         {

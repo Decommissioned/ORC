@@ -50,13 +50,18 @@ namespace ORC_NAMESPACE
                 return shaderID;
         }
 
-        uint32 Shader::LinkShader(uint32 vertexID, uint32 fragmentID)
-        {
-                GLint success;
-                uint32 programID = glCreateProgram();
 
+        uint32 Shader::CreateProgram(uint32 vertexID, uint32 fragmentID)
+        {
+                uint32 programID = glCreateProgram();
                 glAttachShader(programID, vertexID);
                 glAttachShader(programID, fragmentID);
+                return programID;
+        }
+
+        void Shader::LinkProgram(uint32 programID)
+        {
+                GLint success;
 
                 glLinkProgram(programID);
                 glGetProgramiv(programID, GL_LINK_STATUS, &success);
@@ -85,13 +90,12 @@ namespace ORC_NAMESPACE
                         std::cerr << "Shader validation failed:\n" << log << std::endl;
                         throw Error::OPENGL_SHADER_VALIDATION;
                 }
+        }
 
-                glDetachShader(programID, vertexID);
-                glDetachShader(programID, fragmentID);
-                glDeleteShader(vertexID);
-                glDeleteShader(fragmentID);
-
-                return programID;
+        void Shader::DeleteShader(uint32 programID, uint32 shaderID)
+        {
+                glDetachShader(programID, shaderID);
+                glDeleteShader(shaderID);
         }
 
         //////////////////////////////////////////////////////////////////////////
@@ -102,7 +106,26 @@ namespace ORC_NAMESPACE
                 string frag_src = ReadFile(fragment);
                 uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
                 uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
-                _programID = LinkShader(vertexID, fragmentID);
+                _programID = CreateProgram(vertexID, fragmentID);
+                LinkProgram(_programID);
+                DeleteShader(_programID, vertexID);
+                DeleteShader(_programID, fragmentID);
+        }
+
+        Shader::Shader(const char* vertex, const char* fragment, std::initializer_list<std::pair<uint8, string>> attributes)
+        {
+                string vertex_src = ReadFile(vertex);
+                string frag_src = ReadFile(fragment);
+                uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
+                uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
+                _programID = CreateProgram(vertexID, fragmentID);
+
+                for (auto& attribute : attributes)
+                        BindAttribute(attribute.first, attribute.second.c_str());
+
+                LinkProgram(_programID);
+                DeleteShader(_programID, vertexID);
+                DeleteShader(_programID, fragmentID);
         }
 
         Shader::~Shader()
@@ -124,5 +147,4 @@ namespace ORC_NAMESPACE
         {
                 return _programID;
         }
-
 };
