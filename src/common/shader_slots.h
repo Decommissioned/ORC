@@ -8,8 +8,8 @@ namespace ORC_NAMESPACE
 
         enum : uint8
         {
-                VERTEX_POSITIONS = 0,
-                VERTEX_INDICES = 1,
+                VERTEX_POSITION = 0,
+                VERTEX_UV = 1
         };
 
 };

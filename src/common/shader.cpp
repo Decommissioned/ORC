@@ -120,4 +120,9 @@ namespace ORC_NAMESPACE
                 glBindAttribLocation(_programID, slot, attribute);
         }
 
+        uint32 Shader::ID() const
+        {
+                return _programID;
+        }
+
 };

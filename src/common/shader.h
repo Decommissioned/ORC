@@ -2,6 +2,7 @@
 #define _SHADER_H
 
 #include "config.h"
+#include "shader_slots.h"
 
 namespace ORC_NAMESPACE
 {
@@ -15,6 +16,8 @@ namespace ORC_NAMESPACE
 
                 void Bind();
                 void BindAttribute(uint8 slot, const char* attribute);
+
+                uint32 ID() const;
 
         protected:
 
