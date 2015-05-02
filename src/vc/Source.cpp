@@ -15,9 +15,11 @@
 extern void HideConsoleWindow();
 #endif
 
-#include "../common/shader.h"
+#include "../common/generic_shader.h"
 #include "../common/mesh.h"
-#include "../common/resource_loader.h"
+#include "../common/texture.h"
+
+#include "../common/uniform_buffer.h"
 
 #include <iostream>
 
@@ -32,28 +34,42 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         glClearColor(r, g, b, 1.0f);
 
         vector<orc::uint32> indices = {
-                0, 1, 2,
-                1, 3, 4,
-                2, 4, 5
+                0, 1, 3,
+                1, 2, 3
         };
         vector<float> positions = {
-                 0.00f,  0.75f, 0.0f,
-                 0.25f,  0.25f, 0.0f,
-                -0.25f,  0.25f, 0.0f,
-                 0.50f, -0.25f, 0.0f,
-                 0.00f, -0.25f, 0.0f,
-                -0.50f, -0.25f, 0.0f
+                0.5f, 0.5f, 0.0f,
+                0.5f, -0.5f, 0.0f,
+                -0.5f, -0.5f, 0.0f,
+                -0.5f, 0.5f, 0.0f,
         };
-        orc::Mesh mesh(positions, indices);
-        mesh.Bind();
-        
-        
-        PRINT_LAST_ERROR;
+        vector<float> UVs = {
+                0.0f, 0.0f,
+                0.0f, 1.0f,
+                1.0f, 1.0f,
+                1.0f, 0.0f,
+        };
 
-        orc::Shader shader = orc::Shader("vertex.shader", "fragment.shader");
+        struct Transformation
+        {
+                float projection[16];
+                float view[16];
+        };
+        Transformation transformation;
+
+        orc::GenericShader shader = orc::GenericShader();
         shader.Bind();
 
-        glEnableVertexAttribArray(0);
+        orc::UniformBuffer ubo = orc::UniformBuffer(shader, "global");
+        ubo.Update(transformation);
+
+        orc::Mesh mesh(positions, indices, UVs);
+        mesh.Bind();
+
+        orc::Texture texture("shovelknight.png");
+        texture.Bind();
+
+        PRINT_LAST_ERROR;
         
         while (!DM::ExitRequested)
         {
@@ -64,6 +80,7 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
                 DM::Present(windowID);
                 std::this_thread::sleep_for(std::chrono::microseconds(16667));
+
                 
         }
         DM::DestroyWindow(windowID);
@@ -71,8 +88,6 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
 int main(int argc, char**argv)
 {
-
-        orc::ResourceLoader::LoadImage("mushroom.png");
 
         auto hwnd1 = DM::CreateWindow("Window A", 640, 480);
         std::thread t1(Render, hwnd1, 0.1f, 0.1f, 0.2f);

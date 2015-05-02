@@ -22,60 +22,105 @@
     <Filter Include="Resource Files\shader">
       <UniqueIdentifier>{bde8087a-f4db-4da7-901e-20c7970b0234}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\common\mesh">
+      <UniqueIdentifier>{c583c670-a852-4b74-bfcd-1682b8baf58f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\common\texture">
+      <UniqueIdentifier>{30658980-f6b1-4535-995a-282b8f20cae7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\common\shader">
+      <UniqueIdentifier>{3a7477fb-9359-4897-b5b4-855de41e1b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\common\mesh">
+      <UniqueIdentifier>{36a57449-e8b7-4db1-87fd-e1b62c3efd9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\common\shader">
+      <UniqueIdentifier>{172ec48b-f647-4336-809c-6ce47c7ac74f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\common\texture">
+      <UniqueIdentifier>{2e883222-3957-474d-8680-30d293ba6529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vc">
+      <UniqueIdentifier>{8b9dc3fb-e651-4920-a0ad-c401376ecc95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\common\misc">
+      <UniqueIdentifier>{ff471a22-cdfa-4874-b5a4-591387908977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\common\misc">
+      <UniqueIdentifier>{9dcfaa54-901c-47a5-a17c-29293410d0b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\common\mesh.cpp">
+      <Filter>Source Files\common\mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\common\DisplayManager.cpp">
-      <Filter>Source Files\common</Filter>
-    </ClCompile>
-    <ClCompile Include="windows_interfacing.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\common\texture.cpp">
+      <Filter>Source Files\common\texture</Filter>
     </ClCompile>
     <ClCompile Include="..\common\shader.cpp">
-      <Filter>Source Files\common</Filter>
+      <Filter>Source Files\common\shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\common\mesh.cpp">
-      <Filter>Source Files\common</Filter>
+    <ClCompile Include="windows_interfacing.cpp">
+      <Filter>Source Files\vc</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files\vc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\DisplayManager.cpp">
+      <Filter>Source Files\common\misc</Filter>
     </ClCompile>
     <ClCompile Include="..\common\resource_loader.cpp">
-      <Filter>Source Files\common</Filter>
+      <Filter>Source Files\common\misc</Filter>
     </ClCompile>
     <ClCompile Include="..\common\util.cpp">
-      <Filter>Source Files\common</Filter>
+      <Filter>Source Files\common\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\generic_shader.cpp">
+      <Filter>Source Files\common\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\uniform_buffer.cpp">
+      <Filter>Source Files\common\shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\common\config.h">
-      <Filter>Header Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\common\error_codes.h">
-      <Filter>Header Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\common\scope_guard.h">
-      <Filter>Header Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\common\DisplayManager.h">
-      <Filter>Header Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\common\mesh.h">
-      <Filter>Header Files\common</Filter>
+    <ClInclude Include="..\common\shader_slots.h">
+      <Filter>Header Files\common\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\common\shader.h">
-      <Filter>Header Files\common</Filter>
+      <Filter>Header Files\common\shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\common\shader_slots.h">
-      <Filter>Header Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\common\resource_loader.h">
-      <Filter>Header Files\common</Filter>
+    <ClInclude Include="..\common\mesh.h">
+      <Filter>Header Files\common\mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\common\image.h">
-      <Filter>Header Files\common</Filter>
+      <Filter>Header Files\common\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\texture.h">
+      <Filter>Header Files\common\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\config.h">
+      <Filter>Header Files\common\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\DisplayManager.h">
+      <Filter>Header Files\common\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\error_codes.h">
+      <Filter>Header Files\common\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\resource_loader.h">
+      <Filter>Header Files\common\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\scope_guard.h">
+      <Filter>Header Files\common\misc</Filter>
     </ClInclude>
     <ClInclude Include="..\common\util.h">
-      <Filter>Header Files\common</Filter>
+      <Filter>Header Files\common\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\generic_shader.h">
+      <Filter>Header Files\common\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\uniform_buffer.h">
+      <Filter>Header Files\common\shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
