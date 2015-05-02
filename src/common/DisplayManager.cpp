@@ -5,8 +5,7 @@
 #include <GL/glew.h>
 
 #include <mutex>
-#include <vector>
-#include <thread>
+#include <list>
 
 #include <iostream>
 
@@ -16,7 +15,11 @@ namespace ORC_NAMESPACE
         static std::mutex _mutex;
         static uint32 _ref_count = 0;
 
-        static std::vector<std::pair<uint32, void*>> _windows;
+        static std::list<std::pair<uint32, void*>> _windows;
+
+        static std::list<std::pair<uint32, DisplayManager::MouseCallback>> _mouse;
+        static std::list<std::pair<uint32, DisplayManager::KeyboardCallback>> _keyboard;
+        static std::list<std::pair<uint32, DisplayManager::MouseMovementCallback>> _mouse_movement;
 
         //////////////////////////////////////////////////////////////////////////
 
@@ -30,6 +33,33 @@ namespace ORC_NAMESPACE
                 }
         }
 
+        static void KeyboardEventHandler(SDL_KeyboardEvent& e)
+        {
+                for (auto& pair : _keyboard)
+                {
+                        if (pair.first == 0 || pair.first == e.windowID)
+                                pair.second(e.keysym.sym, e.state);
+                }
+        }
+
+        static void MouseEventHandler(SDL_MouseButtonEvent& e)
+        {
+                for (auto& pair : _mouse)
+                {
+                        if (pair.first == 0 || pair.first == e.windowID)
+                                pair.second(e.button, e.state);
+                }
+        }
+
+        static void MouseMovementEventHandler(SDL_MouseMotionEvent& e)
+        {
+                for (auto& pair : _mouse_movement)
+                {
+                        if (pair.first == 0 || pair.first == e.windowID)
+                                pair.second(e.xrel, e.yrel);
+                }
+        }
+
         void DisplayManager::EnterMessageLoop()
         {
                 bool quit = false;
@@ -39,9 +69,22 @@ namespace ORC_NAMESPACE
                         SDL_WaitEvent(&e);
                         switch (e.type)
                         {
-                        case SDL_QUIT: quit = true;
+                        case SDL_QUIT:
+                                quit = true;
                                 break;
-                        case SDL_WINDOWEVENT: WindowEventHandler(e.window);
+                        case SDL_WINDOWEVENT:
+                                WindowEventHandler(e.window);
+                                break;
+                        case SDL_MOUSEBUTTONDOWN:
+                        case SDL_MOUSEBUTTONUP:
+                                MouseEventHandler(e.button);
+                                break;
+                        case SDL_MOUSEMOTION:
+                                MouseMovementEventHandler(e.motion);
+                                break;
+                        case SDL_KEYDOWN:
+                        case SDL_KEYUP:
+                                KeyboardEventHandler(e.key);
                                 break;
                         }
                 }
@@ -94,6 +137,22 @@ namespace ORC_NAMESPACE
                                 SDL_Window* window = SDL_GetWindowFromID(windowID);
                                 if (window) SDL_DestroyWindow(window);
 
+                                for (auto itr = _keyboard.begin(); itr != _keyboard.end();)
+                                {
+                                        if (itr->first == windowID) _keyboard.erase(itr++);
+                                        else itr++;
+                                }
+                                for (auto itr = _mouse.begin(); itr != _mouse.end(); ++itr)
+                                {
+                                        if (itr->first == windowID) _mouse.erase(itr++);
+                                        else itr++;
+                                }
+                                for (auto itr = _mouse_movement.begin(); itr != _mouse_movement.end(); ++itr)
+                                {
+                                        if (itr->first == windowID) _mouse_movement.erase(itr++);
+                                        else itr++;
+                                }
+
                                 _ref_count--;
                                 break;
                         }
@@ -102,6 +161,9 @@ namespace ORC_NAMESPACE
                 if (_ref_count == 0)
                 {
                         SDL_QuitSubSystem(SDL_INIT_VIDEO);
+                        _mouse.clear();
+                        _keyboard.clear();
+                        _mouse_movement.clear();
                         ExitRequested = true;
                 }
         }
@@ -128,7 +190,7 @@ namespace ORC_NAMESPACE
                         SDL_DestroyWindow(window);
                         throw Error::OPENGL_INITIALIZATION;
                 }
-                
+
                 glewExperimental = GL_TRUE;
                 if (glewInit() != GLEW_OK)
                 {
@@ -137,7 +199,7 @@ namespace ORC_NAMESPACE
                         throw Error::GLEW_INITIALIZATION;
                 }
                 glGetError(); // HACK: there is a bug in GLEW, ignore the error generated by its initialization
-                
+
                 for (auto& _window : _windows)
                 {
                         if (_window.first == windowID)
@@ -146,6 +208,21 @@ namespace ORC_NAMESPACE
                                 break;
                         }
                 }
+        }
+
+        void DisplayManager::AddMouseHandler(uint32 windowID, MouseCallback& callback)
+        {
+                _mouse.emplace_back(std::make_pair(windowID, callback));
+        }
+
+        void DisplayManager::AddKeyboardHandler(uint32 windowID, KeyboardCallback& callback)
+        {
+                _keyboard.emplace_back(std::make_pair(windowID, callback));
+        }
+
+        void DisplayManager::AddMouseMovementHandler(uint32 windowID, MouseMovementCallback& callback)
+        {
+                _mouse_movement.emplace_back(std::make_pair(windowID, callback));
         }
 
         bool DisplayManager::ExitRequested = false;

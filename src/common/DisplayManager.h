@@ -12,6 +12,10 @@ namespace ORC_NAMESPACE
 
         public:
 
+                using MouseCallback = std::function < void(uint8, bool) > ;
+                using KeyboardCallback = std::function < void(char, bool) > ;
+                using MouseMovementCallback = std::function < void(int16, int16) > ;
+
                 // DESCRIPTION: Blocks the caller thread and starts processing the message queue
                 // REMARK: This method should only be called once per program
                 static void EnterMessageLoop();
@@ -22,6 +26,10 @@ namespace ORC_NAMESPACE
 
                 static void SetVisible(uint32 windowID, bool visible);
                 static void Present(uint32 windowID);
+
+                static void AddMouseHandler(uint32 windowID, MouseCallback& callback);
+                static void AddKeyboardHandler(uint32 windowID, KeyboardCallback& callback);
+                static void AddMouseMovementHandler(uint32 windowID, MouseMovementCallback& callback);
 
                 static bool ExitRequested;
 
