@@ -27,4 +27,10 @@ namespace ORC_NAMESPACE
         using ErrorCode = uint16_t;
 };
 
+#if _WIN32
+#define THREAD_LOCAL_STORAGE __declspec(thread)
+#else
+#error Unsupported platform
+#endif
+
 #endif // _CONFIG_H
