@@ -10,20 +10,20 @@
 namespace ORC_NAMESPACE
 {
 
-        static std::string ReadFile(const char* path)
+        string Shader::ReadFile(const char* path)
         {
-                const std::string folder = "../shader/";
+                const string folder = "../shader/";
                 std::ifstream t(folder + path);
                 if (t.fail()) throw Error::ORC_SHADER_FILE_NOT_FOUND;
                 t.seekg(0, std::ios::end);
                 size_t size = t.tellg();
-                std::string buffer(size, ' ');
+                string buffer(size, ' ');
                 t.seekg(0);
                 t.read(&buffer[0], size);
                 return buffer;
         }
 
-        static uint32 CompileShader(const std::string& source, GLenum type)
+        uint32 Shader::CompileShader(const string& source, GLenum type)
         {
                 uint32 shaderID;
                 GLint success;
@@ -50,7 +50,7 @@ namespace ORC_NAMESPACE
                 return shaderID;
         }
 
-        static uint32 LinkShader(uint32 vertexID, uint32 fragmentID)
+        uint32 Shader::LinkShader(uint32 vertexID, uint32 fragmentID)
         {
                 GLint success;
                 uint32 programID = glCreateProgram();
@@ -98,8 +98,8 @@ namespace ORC_NAMESPACE
 
         Shader::Shader(const char* vertex, const char* fragment)
         {
-                std::string vertex_src = ReadFile(vertex);
-                std::string frag_src = ReadFile(fragment);
+                string vertex_src = ReadFile(vertex);
+                string frag_src = ReadFile(fragment);
                 uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
                 uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
                 _programID = LinkShader(vertexID, fragmentID);
@@ -113,6 +113,11 @@ namespace ORC_NAMESPACE
         void Shader::Bind()
         {
                 glUseProgram(_programID);
+        }
+
+        void Shader::BindAttribute(uint8 slot, const char* attribute)
+        {
+                glBindAttribLocation(_programID, slot, attribute);
         }
 
 };

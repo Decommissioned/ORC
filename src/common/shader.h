@@ -14,8 +14,13 @@ namespace ORC_NAMESPACE
                 virtual ~Shader();
 
                 void Bind();
+                void BindAttribute(uint8 slot, const char* attribute);
 
-        private:
+        protected:
+
+                static string ReadFile(const char* path);
+                static uint32 CompileShader(const string& source, uint32 type);
+                static uint32 LinkShader(uint32 vertexID, uint32 fragmentID);
 
                 uint32 _programID;
 
