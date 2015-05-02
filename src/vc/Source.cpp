@@ -27,9 +27,17 @@ extern void HideConsoleWindow();
 
 using DM = orc::DisplayManager;
 
+void MouseMotionHandler(orc::int16 dx, orc::int16 dy)
+{
+        std::cout << '{' << dx << ", " << dy << '}' << std::endl;
+}
+
 void Render(orc::uint32 windowID, float r, float g, float b)
 {
         DM::CreateOpenGLContext(windowID);
+
+        auto func = DM::MouseMovementCallback(MouseMotionHandler);
+        DM::AddMouseMovementHandler(windowID, func);
         
         glClearColor(r, g, b, 1.0f);
 
@@ -55,13 +63,9 @@ void Render(orc::uint32 windowID, float r, float g, float b)
                 float projection[16];
                 float view[16];
         };
-        Transformation transformation;
 
         orc::GenericShader shader = orc::GenericShader();
         shader.Bind();
-
-        orc::UniformBuffer ubo = orc::UniformBuffer(shader, "global");
-        ubo.Update(transformation);
 
         orc::Mesh mesh(positions, indices, UVs);
         mesh.Bind();
@@ -70,10 +74,9 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         texture.Bind();
 
         PRINT_LAST_ERROR;
-        
+       
         while (!DM::ExitRequested)
         {
-                
                 glClear(GL_COLOR_BUFFER_BIT);
 
                 mesh.Draw();
@@ -91,16 +94,16 @@ int main(int argc, char**argv)
 
         auto hwnd1 = DM::CreateWindow("Window A", 640, 480);
         std::thread t1(Render, hwnd1, 0.1f, 0.1f, 0.2f);
-        // auto hwnd2 = DM::CreateWindow("Window B", 640, 480);
-        // std::thread t2(Render, hwnd2, 0.1f, 0.2f, 0.1f);
-        // auto hwnd3 = DM::CreateWindow("Window C", 640, 480);
-        // std::thread t3(Render, hwnd3, 0.2f, 0.1f, 0.1f);
+        //auto hwnd2 = DM::CreateWindow("Window B", 640, 480);
+        //std::thread t2(Render, hwnd2, 0.1f, 0.2f, 0.1f);
+        //auto hwnd3 = DM::CreateWindow("Window C", 640, 480);
+        //std::thread t3(Render, hwnd3, 0.2f, 0.1f, 0.1f);
 
         DM::EnterMessageLoop();
 
         t1.join();
-        // t2.join();
-        // t3.join();
+        //t2.join();
+        //t3.join();
 
         return 0;
 }
