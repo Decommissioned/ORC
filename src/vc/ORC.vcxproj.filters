@@ -19,6 +19,9 @@
     <Filter Include="Source Files\common">
       <UniqueIdentifier>{52370615-2af7-4cbd-a293-dd1ec101d2bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shader">
+      <UniqueIdentifier>{bde8087a-f4db-4da7-901e-20c7970b0234}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -34,6 +37,12 @@
       <Filter>Source Files\common</Filter>
     </ClCompile>
     <ClCompile Include="..\common\mesh.cpp">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\resource_loader.cpp">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\util.cpp">
       <Filter>Source Files\common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,13 +68,22 @@
     <ClInclude Include="..\common\shader_slots.h">
       <Filter>Header Files\common</Filter>
     </ClInclude>
+    <ClInclude Include="..\common\resource_loader.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\image.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\util.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\shader\fragment.shader">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\shader\vertex.shader">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\shader</Filter>
+    </None>
+    <None Include="..\shader\fragment.shader">
+      <Filter>Resource Files\shader</Filter>
     </None>
   </ItemGroup>
 </Project>

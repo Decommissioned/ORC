@@ -144,7 +144,9 @@
   <ItemGroup>
     <ClCompile Include="..\common\DisplayManager.cpp" />
     <ClCompile Include="..\common\mesh.cpp" />
+    <ClCompile Include="..\common\resource_loader.cpp" />
     <ClCompile Include="..\common\shader.cpp" />
+    <ClCompile Include="..\common\util.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="windows_interfacing.cpp" />
   </ItemGroup>
@@ -152,10 +154,13 @@
     <ClInclude Include="..\common\DisplayManager.h" />
     <ClInclude Include="..\common\error_codes.h" />
     <ClInclude Include="..\common\config.h" />
+    <ClInclude Include="..\common\image.h" />
     <ClInclude Include="..\common\mesh.h" />
+    <ClInclude Include="..\common\resource_loader.h" />
     <ClInclude Include="..\common\scope_guard.h" />
     <ClInclude Include="..\common\shader.h" />
     <ClInclude Include="..\common\shader_slots.h" />
+    <ClInclude Include="..\common\util.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shader\fragment.shader" />

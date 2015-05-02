@@ -17,6 +17,7 @@ extern void HideConsoleWindow();
 
 #include "../common/shader.h"
 #include "../common/mesh.h"
+#include "../common/resource_loader.h"
 
 #include <iostream>
 
@@ -70,6 +71,8 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
 int main(int argc, char**argv)
 {
+
+        orc::ResourceLoader::LoadImage("mushroom.png");
 
         auto hwnd1 = DM::CreateWindow("Window A", 640, 480);
         std::thread t1(Render, hwnd1, 0.1f, 0.1f, 0.2f);
