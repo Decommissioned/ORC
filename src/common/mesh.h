@@ -11,7 +11,7 @@ namespace ORC_NAMESPACE
 
         public:
 
-                Mesh(const vector<float>& positions, const vector<uint32> indices);
+                Mesh(const vector<float>& positions, const vector<uint32> indices, const vector<float>& UVs);
                 virtual ~Mesh();
 
                 void Bind();
