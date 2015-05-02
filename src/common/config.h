@@ -6,6 +6,11 @@
 #include <cstdint>
 using ErrorCode = uint16_t;
 
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
 #define ORC_NAMESPACE orc
 
 namespace ORC_NAMESPACE
