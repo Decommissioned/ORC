@@ -27,6 +27,12 @@
     <ClCompile Include="..\common\DisplayManager.cpp">
       <Filter>Source Files\common</Filter>
     </ClCompile>
+    <ClCompile Include="windows_interfacing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\shader.cpp">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\config.h">
@@ -41,5 +47,19 @@
     <ClInclude Include="..\common\DisplayManager.h">
       <Filter>Header Files\common</Filter>
     </ClInclude>
+    <ClInclude Include="..\common\mesh.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\shader.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shader\fragment.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\shader\vertex.shader">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
