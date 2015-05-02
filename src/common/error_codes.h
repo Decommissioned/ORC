@@ -23,7 +23,11 @@ namespace ORC_NAMESPACE
                 OPENGL_SHADER_LINKING,
                 OPENGL_SHADER_VALIDATION,
 
-                ORC_SHADER_FILE_NOT_FOUND
+                ORC_SHADER_FILE_NOT_FOUND,
+
+                IO_FILE_NOT_FOUND,
+                IO_FILE_OPEN,
+                IO_LOAD_PNG
         };
 
 };
