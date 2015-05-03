@@ -81,6 +81,12 @@
     <ClCompile Include="..\common\uniform_buffer.cpp">
       <Filter>Source Files\common\shader</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\transformation3d.cpp">
+      <Filter>Source Files\common\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\entity.cpp">
+      <Filter>Source Files\common\mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\shader_slots.h">
@@ -121,6 +127,12 @@
     </ClInclude>
     <ClInclude Include="..\common\uniform_buffer.h">
       <Filter>Header Files\common\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\transformation3d.h">
+      <Filter>Header Files\common\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\entity.h">
+      <Filter>Header Files\common\mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
