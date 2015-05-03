@@ -1,5 +1,6 @@
 #include "shader.h"
 #include "error_codes.h"
+#include "util.h"
 
 #include <GL/glew.h>
 
@@ -10,17 +11,10 @@
 namespace ORC_NAMESPACE
 {
 
-        string Shader::ReadFile(const char* path)
+        string Shader::ReadShaderFile(const char* path)
         {
                 const string folder = "../shader/";
-                std::ifstream t(folder + path);
-                if (t.fail()) throw Error::ORC_SHADER_FILE_NOT_FOUND;
-                t.seekg(0, std::ios::end);
-                size_t size = t.tellg();
-                string buffer(size, ' ');
-                t.seekg(0);
-                t.read(&buffer[0], size);
-                return buffer;
+                return util::ReadFileText(folder + path);
         }
 
         uint32 Shader::CompileShader(const string& source, GLenum type)
@@ -102,8 +96,8 @@ namespace ORC_NAMESPACE
 
         Shader::Shader(const char* vertex, const char* fragment)
         {
-                string vertex_src = ReadFile(vertex);
-                string frag_src = ReadFile(fragment);
+                string vertex_src = ReadShaderFile(vertex);
+                string frag_src = ReadShaderFile(fragment);
                 uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
                 uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
                 _programID = CreateProgram(vertexID, fragmentID);
@@ -114,8 +108,8 @@ namespace ORC_NAMESPACE
 
         Shader::Shader(const char* vertex, const char* fragment, std::initializer_list<std::pair<uint8, string>> attributes)
         {
-                string vertex_src = ReadFile(vertex);
-                string frag_src = ReadFile(fragment);
+                string vertex_src = ReadShaderFile(vertex);
+                string frag_src = ReadShaderFile(fragment);
                 uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
                 uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
                 _programID = CreateProgram(vertexID, fragmentID);
@@ -147,4 +141,5 @@ namespace ORC_NAMESPACE
         {
                 return _programID;
         }
+
 };
