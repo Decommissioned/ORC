@@ -6,8 +6,9 @@
 namespace ORC_NAMESPACE
 {
 
-        Texture::Texture(const string& path, TextureWrapping wrapping, TextureFiltering filtering)
+        Texture2D::Texture2D(const string& path, TextureWrapping wrapping, TextureFiltering filtering)
         {
+                // TODO: fix mip map generation 
                 Image img = ResourceLoader::LoadImage(path);
 
                 glGenTextures(1, &_textureID);
@@ -53,26 +54,31 @@ namespace ORC_NAMESPACE
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &img.data[0]);
         }
 
-        Texture::Texture(const string& path, TextureFiltering filtering)
-                : Texture(path, TextureWrapping::REPEAT, TextureFiltering::LINEAR)
+        Texture2D::Texture2D(const string& path, TextureFiltering filtering)
+                : Texture2D(path, TextureWrapping::REPEAT, TextureFiltering::LINEAR)
         {}
 
-        Texture::Texture(const string& path, TextureWrapping wrapping)
-                : Texture(path, wrapping, TextureFiltering::LINEAR)
+        Texture2D::Texture2D(const string& path, TextureWrapping wrapping)
+                : Texture2D(path, wrapping, TextureFiltering::LINEAR)
         {}
 
-        Texture::Texture(const string& path)
-                : Texture(path, TextureWrapping::REPEAT, TextureFiltering::LINEAR)
+        Texture2D::Texture2D(const string& path)
+                : Texture2D(path, TextureWrapping::REPEAT, TextureFiltering::LINEAR)
         {}
 
-        Texture::~Texture()
+        Texture2D::~Texture2D()
         {
                 glDeleteTextures(1, &_textureID);
         }
 
-        void Texture::Bind()
+        void Texture2D::Bind()
         {
                 glBindTexture(GL_TEXTURE_2D, _textureID);
+        }
+
+        uint32 Texture2D::ID() const
+        {
+                return _textureID;
         }
 
 };

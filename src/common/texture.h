@@ -22,19 +22,20 @@ namespace ORC_NAMESPACE
                 LINEAR_MIPMAP
         };
 
-        class Texture final
+        class Texture2D final
         {
         public:
 
-                explicit Texture(const string& path, TextureWrapping wrapping, TextureFiltering filtering);
-                explicit Texture(const string& path, TextureFiltering filtering);
-                explicit Texture(const string& path, TextureWrapping wrapping);
-                explicit Texture(const string& path);
+                explicit Texture2D(const string& path, TextureWrapping wrapping, TextureFiltering filtering);
+                explicit Texture2D(const string& path, TextureFiltering filtering);
+                explicit Texture2D(const string& path, TextureWrapping wrapping);
+                explicit Texture2D(const string& path);
 
-                Texture(Texture&) = delete;
-                ~Texture();
+                Texture2D(Texture2D&) = delete;
+                ~Texture2D();
 
                 void Bind();
+                uint32 ID() const;
 
         private:
 
