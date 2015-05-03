@@ -10,7 +10,7 @@ namespace ORC_NAMESPACE
                 _count(indices.size())
         {
                 glGenVertexArrays(1, &_VAO);
-                glGenBuffers(3, _VBO);
+                glGenBuffers(_ATTRIBUTE_COUNT, _VBO);
 
                 glBindVertexArray(_VAO);
 
@@ -30,7 +30,7 @@ namespace ORC_NAMESPACE
 
         Mesh::~Mesh()
         {
-                glDeleteBuffers(3, _VBO);
+                glDeleteBuffers(_ATTRIBUTE_COUNT, _VBO);
                 glDeleteVertexArrays(1, &_VAO);
         }
 
@@ -44,6 +44,16 @@ namespace ORC_NAMESPACE
         void Mesh::Draw() const
         {
                 glDrawElements(GL_TRIANGLES, _count, GL_UNSIGNED_INT, 0);
+        }
+
+        uint32 Mesh::Count() const
+        {
+                return _count;
+        }
+
+        uint32 Mesh::ID() const
+        {
+                return _VAO;
         }
 
 };

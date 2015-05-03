@@ -16,12 +16,17 @@ namespace ORC_NAMESPACE
 
                 void Bind();
                 void Draw() const;
+                uint32 ID() const;
+                uint32 Count() const;
 
         protected:
 
+                const static uint8 _ATTRIBUTE_COUNT = 3;
+
                 uint32 _VAO;
-                uint32 _VBO[16];
+                uint32 _VBO[_ATTRIBUTE_COUNT];
                 uint32 _count;
+
 
         };
 
