@@ -14,7 +14,7 @@ namespace ORC_NAMESPACE
         {
                 Image img;
 
-                vector<uint8> data = util::LoadFileToMemory(img_folder + path);
+                vector<uint8> data = util::ReadFileBinary(img_folder + path);
                 
                 unsigned long width, height;
                 if (decodePNG(img.data, width, height, &data[0], data.size(), true) != 0)
