@@ -15,6 +15,12 @@ namespace ORC_NAMESPACE
 
                 virtual ~GenericShader();
 
+                void SetUniform(const char* name, const void* data);
+
+        protected:
+
+                vector<std::pair<string, uint32>> attributes;
+
         };
 
 };
