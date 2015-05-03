@@ -13,17 +13,19 @@ namespace ORC_NAMESPACE
                 SDL_VIDEO_INITIALIZATION,
                 SDL_WINDOW_CREATION,
 
-                OPENGL_INITIALIZATION,
                 GLEW_INITIALIZATION,
 
                 DISPLAY_CONTEXT_NOT_CREATED,
                 DISPLAY_CONTEXT_IN_USE,
 
+                OPENGL_INITIALIZATION,
+
                 OPENGL_SHADER_COMPILATION,
                 OPENGL_SHADER_LINKING,
                 OPENGL_SHADER_VALIDATION,
 
-                ORC_SHADER_FILE_NOT_FOUND,
+                OPENGL_INVALID_UNIFORM_NAME,
+                OPENGL_INVALID_UNIFORM_TYPE,
 
                 IO_FILE_NOT_FOUND,
                 IO_FILE_OPEN,
