@@ -1,7 +1,7 @@
 #ifndef _UNIFORM_BUFFER_H
 #define _UNIFORM_BUFFER_H
 
-#include "shader.h"
+#include "config.h"
 
 namespace ORC_NAMESPACE
 {
@@ -11,19 +11,19 @@ namespace ORC_NAMESPACE
 
         public:
 
-                UniformBuffer(const Shader& program, const string& name);
+                UniformBuffer(uint32 programID, const string& name);
                 ~UniformBuffer();
 
                 template<typename block>
                 void Update(const block& data)
                 {
-                        Update(&data, sizeof(block));
+                        _Update(&data, sizeof(block));
                 }
 
 
         private:
 
-                void Update(const void* data, uint32 length);
+                void _Update(const void* data, uint32 length);
 
                 uint32 _blockID;
                 uint32 _bufferID;
