@@ -10,7 +10,8 @@ namespace ORC_NAMESPACE
 
                 std::size_t FileSize(const string& path);
 
-                vector<uint8> LoadFileToMemory(const string& path);
+                string ReadFileText(const string& path);
+                vector<uint8> ReadFileBinary(const string& path);
 
         };
 };

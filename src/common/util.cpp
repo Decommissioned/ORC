@@ -14,13 +14,25 @@ namespace ORC_NAMESPACE
                 std::size_t FileSize(const string& path)
                 {
                         struct stat st;
+
                         if (stat(path.c_str(), &st) != 0)
                                 throw Error::IO_FILE_NOT_FOUND;
 
                         return st.st_size;
                 }
 
-                vector<uint8> LoadFileToMemory(const string& path)
+                string ReadFileText(const string& path)
+                {
+                        std::size_t length = FileSize(path);
+                        std::ifstream file(path);
+                        string content(length, 0);
+
+                        file.read(&content[0], length);
+
+                        return content;
+                }
+
+                vector<uint8> ReadFileBinary(const string& path)
                 {
                         std::size_t length = FileSize(path);
                         std::ifstream file(path, std::ios::binary);
@@ -31,6 +43,5 @@ namespace ORC_NAMESPACE
 
                         return data;
                 }
-
         };
 };
