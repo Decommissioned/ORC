@@ -19,7 +19,14 @@ namespace ORC_NAMESPACE
 
         protected:
 
-                vector<std::pair<string, uint32>> attributes;
+                struct _uniform
+                {
+                        string name;
+                        int32 location;
+                        uint32 type;
+                };
+
+                vector<_uniform> attributes;
 
         };
 

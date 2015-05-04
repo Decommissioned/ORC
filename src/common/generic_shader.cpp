@@ -1,5 +1,6 @@
 #include "generic_shader.h"
 #include "error_codes.h"
+#include "vertex_attributes.h"
 
 #include <GL\glew.h>
 
@@ -7,17 +8,22 @@ namespace ORC_NAMESPACE
 {
 
         GenericShader::GenericShader()
-                : Shader("vertex.shader", "fragment.shader", {{VERTEX_POSITION, "position"}, {VERTEX_UV, "uv"}})
+                : Shader("vertex.shader", "fragment.shader", {{VERTEX_POSITION, "position"}, {VERTEX_UV, "uv"}, {VERTEX_NORMAL, "normal"}})
         {
-                // Gets the list of
+                // Gets the list of uniform variable's names in the current program
                 int32 count;
                 glGetProgramiv(_programID, GL_ACTIVE_UNIFORMS, &count);
                 attributes.reserve(count);
                 char buffer[255]; int32 length; int32 size; uint32 type;
-                for (uint8 i = 0; i < (uint8) count; i++)
+                for (int32 i = 0; i < count; i++)
                 {
+                        // Uniform blocks are also included in the above call, fortunately if we query for their location we get -1
+                        // Since uniform blocks are stored in a different location, using glUniform* to set them is undefined behavior
                         glGetActiveUniform(_programID, i, 255, &length, &size, &type, buffer);
-                        attributes.emplace_back(std::make_pair(buffer, type));
+                        int32 location = glGetUniformLocation(_programID, buffer);
+
+                        if (location != -1)
+                                attributes.emplace_back(_uniform{ buffer, location, type });
                 }
         };
 
@@ -26,48 +32,41 @@ namespace ORC_NAMESPACE
 
         void GenericShader::SetUniform(const char* name, const void* data)
         {
-                bool found = false;
-                uint32 type;
-                uint32 location = 0;
                 for (auto& attribute : attributes)
                 {
-                        if (attribute.first == name)
+                        if (attribute.name == name)
                         {
-                                type = attribute.second;
-                                found = true;
-                                break;
+                                switch (attribute.type) // TODO: Think harder about a better way of handling this mess
+                                {
+                                case GL_FLOAT: glUniform1f(attribute.location, *((float*) data));
+                                        break;
+                                case GL_FLOAT_VEC2: glUniform2f(attribute.location, *((float*) data), *(((float*) data) + 1));
+                                        break;
+                                case GL_FLOAT_VEC3: glUniform3f(attribute.location, *((float*) data), *(((float*) data) + 1), *(((float*) data) + 2));
+                                        break;
+                                case GL_FLOAT_VEC4: glUniform4f(attribute.location, *((float*) data), *(((float*) data) + 1), *(((float*) data) + 2), *(((float*) data) + 3));
+                                        break;
+                                case GL_INT: glUniform1i(attribute.location, *((int*) data));
+                                        break;
+                                case GL_INT_VEC2: glUniform2i(attribute.location, *((int*) data), *(((int*) data) + 1));
+                                        break;
+                                case GL_INT_VEC3: glUniform3i(attribute.location, *((int*) data), *(((int*) data) + 1), *(((int*) data) + 2));
+                                        break;
+                                case GL_INT_VEC4: glUniform4i(attribute.location, *((int*) data), *(((int*) data) + 1), *(((int*) data) + 2), *(((int*) data) + 3));
+                                        break;
+                                case GL_FLOAT_MAT2: glUniformMatrix2fv(attribute.location, 1, GL_FALSE, (float*) data);
+                                        break;
+                                case GL_FLOAT_MAT3: glUniformMatrix3fv(attribute.location, 1, GL_FALSE, (float*) data);
+                                        break;
+                                case GL_FLOAT_MAT4: glUniformMatrix4fv(attribute.location, 1, GL_FALSE, (float*) data);
+                                        break;
+                                default: throw Error::OPENGL_INVALID_UNIFORM_TYPE;
+                                }
+                                return;
                         }
-                        location++;
                 }
-
-                if (!found) throw Error::OPENGL_INVALID_UNIFORM_NAME;
-
-                switch (type) // TODO: Think harder about a better way of handling this mess
-                {
-                case GL_FLOAT: glUniform1f(location, *((float*) data));
-                        break;
-                case GL_FLOAT_VEC2: glUniform2f(location, *((float*) data), *(((float*) data) + 1));
-                        break;
-                case GL_FLOAT_VEC3: glUniform3f(location, *((float*) data), *(((float*) data) + 1), *(((float*) data) + 2));
-                        break;
-                case GL_FLOAT_VEC4: glUniform4f(location, *((float*) data), *(((float*) data) + 1), *(((float*) data) + 2), *(((float*) data) + 3));
-                        break;
-                case GL_INT: glUniform1i(location, *((int*) data));
-                        break;
-                case GL_INT_VEC2: glUniform2i(location, *((int*) data), *(((int*) data) + 1));
-                        break;
-                case GL_INT_VEC3: glUniform3i(location, *((int*) data), *(((int*) data) + 1), *(((int*) data) + 2));
-                        break;
-                case GL_INT_VEC4: glUniform4i(location, *((int*) data), *(((int*) data) + 1), *(((int*) data) + 2), *(((int*) data) + 3));
-                        break;
-                case GL_FLOAT_MAT2: glUniformMatrix2fv(location, 1, GL_FALSE, (float*) data);
-                        break;
-                case GL_FLOAT_MAT3: glUniformMatrix3fv(location, 1, GL_FALSE, (float*) data);
-                        break;
-                case GL_FLOAT_MAT4: glUniformMatrix4fv(location, 1, GL_FALSE, (float*) data);
-                        break;
-                default: throw Error::OPENGL_INVALID_UNIFORM_TYPE;
-                }
+                throw Error::OPENGL_INVALID_UNIFORM_NAME;
+                
         }
 
 };
