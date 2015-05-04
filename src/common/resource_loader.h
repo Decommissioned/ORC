@@ -3,7 +3,7 @@
 
 #include "config.h"
 
-#include "image.h"
+#include "resource_types.h"
 
 namespace ORC_NAMESPACE
 {
@@ -13,7 +13,8 @@ namespace ORC_NAMESPACE
 
         public:
 
-                static Image LoadImage(const string& path);
+                static MeshData LoadOBJ(const string& path);
+                static ImageData LoadPNG(const string& path);
 
         private:
 
