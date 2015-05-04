@@ -12,6 +12,7 @@ namespace ORC_NAMESPACE
         public:
 
                 Mesh(const vector<float>& positions, const vector<uint32> indices, const vector<float>& UVs);
+                Mesh(const char* path);
                 virtual ~Mesh();
 
                 void Bind();
@@ -21,7 +22,7 @@ namespace ORC_NAMESPACE
 
         protected:
 
-                const static uint8 _ATTRIBUTE_COUNT = 3;
+                const static uint8 _ATTRIBUTE_COUNT = 4;
 
                 uint32 _VAO;
                 uint32 _VBO[_ATTRIBUTE_COUNT];
