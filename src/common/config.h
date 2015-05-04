@@ -27,8 +27,9 @@ namespace ORC_NAMESPACE
         using ErrorCode = uint16_t;
 };
 
-#if _WIN32
+#if _MSC_VER
 #define THREAD_LOCAL_STORAGE __declspec(thread)
+#define ALIGN_AS(size) __declspec(align(size))
 #else
 #error Unsupported platform
 #endif
