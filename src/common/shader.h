@@ -2,7 +2,6 @@
 #define _SHADER_H
 
 #include "config.h"
-#include "shader_slots.h"
 
 namespace ORC_NAMESPACE
 {

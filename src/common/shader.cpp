@@ -100,7 +100,9 @@ namespace ORC_NAMESPACE
                 string frag_src = ReadShaderFile(fragment);
                 uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
                 uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
+
                 _programID = CreateProgram(vertexID, fragmentID);
+
                 LinkProgram(_programID);
                 DeleteShader(_programID, vertexID);
                 DeleteShader(_programID, fragmentID);
@@ -112,6 +114,7 @@ namespace ORC_NAMESPACE
                 string frag_src = ReadShaderFile(fragment);
                 uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
                 uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
+
                 _programID = CreateProgram(vertexID, fragmentID);
 
                 for (auto& attribute : attributes)
