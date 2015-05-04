@@ -30,9 +30,12 @@ extern void HideConsoleWindow();
 
 using DM = orc::DisplayManager;
 
+glm::vec3 dragon_pos = {-0.5f, 0.0f, 2.0f};
+
 void MouseMotionHandler(orc::int16 dx, orc::int16 dy)
 {
-
+        dragon_pos.x -= dx * 0.01f;
+        dragon_pos.z += dy * 0.025f;
 }
 
 void Render(orc::uint32 windowID, float r, float g, float b)
@@ -45,15 +48,12 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         glClearColor(r, g, b, 1.0f);
 
         vector<orc::uint32> indices = {
-                0, 1, 2,
-                2, 3, 0,
-
-                0, 1, 4,
-                1, 4, 5,
-
-                4, 5, 6,
-                6, 7, 4,
-
+                0, 1, 2, 2, 3, 0,
+                0, 1, 4, 1, 4, 5,
+                2, 3, 6, 3, 6, 7,
+                0, 3, 4, 3, 4, 7,
+                1, 2, 5, 2, 5, 6,
+                4, 5, 6, 6, 7, 4,
         };
         vector<float> positions = {
                 +1, +1, +1, // 0
@@ -70,33 +70,41 @@ void Render(orc::uint32 windowID, float r, float g, float b)
                 0.0f, 1.0f,
                 1.0f, 1.0f,
                 1.0f, 0.0f,
-                0.0f, 0.0f,
-                0.0f, 1.0f,
-                1.0f, 1.0f,
                 1.0f, 0.0f,
+                1.0f, 1.0f,
+                0.0f, 1.0f,
+                0.0f, 0.0f,
         };
 
         struct Transformation
         {
                 glm::mat4 projection;
                 glm::mat4 view;
+                ALIGN_AS(16) glm::vec3 eye;
+                ALIGN_AS(16) glm::vec3 sun;
+                ALIGN_AS(16) glm::vec3 ambient;
+                float render_distance;
         };
 
         Transformation transformation;
-        transformation.projection = glm::perspectiveFov<float>(45.0f, 640.0f, 480.0f, 0.01f, 10.0f);
-        transformation.view =  glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        transformation.ambient = { 1.00f, 1.00f, 1.00f };
+        transformation.sun = glm::normalize(glm::vec3(1.0f,-1.0f,0.0f));
+        transformation.eye = { 0.0f, 0.0f, -1.0f };
+        transformation.view =  glm::lookAt(transformation.eye, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        transformation.projection = glm::perspectiveFov<float>(45.0f, 640.0f, 480.0f, 0.01f, 1000.0f);
 
         orc::GenericShader shader = orc::GenericShader();
         shader.Bind();
 
-        orc::Mesh mesh(positions, indices, UVs);
-        mesh.Bind();
-
-        orc::Texture2D texture("shovelknight.png");
-        texture.Bind();
-
         orc::UniformBuffer ubo(shader.ID(), "global");
         ubo.Update(transformation);
+        
+        orc::Mesh mesh("monkey.obj");
+        //orc::Mesh mesh(positions, indices, UVs);
+        mesh.Bind();
+
+        orc::Texture2D texture("marble.png");
+        texture.Bind();
 
         orc::Entity shovel1 = orc::Entity(mesh.ID(), mesh.Count(), shader.ID(), texture.ID());
 
@@ -104,11 +112,11 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
         while (!DM::ExitRequested)
         {
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-                shovel1.transform.Translate(0.0f, 0.0f, 2.5f);
-                shovel1.transform.Rotate(clock() * 0.001f, 0.0f, 0.0f);
-                shader.SetUniform("model", shovel1.transform.GetMatrixPointer());
+                shovel1.transform.Translate(dragon_pos.x, dragon_pos.y, dragon_pos.z);
+                shovel1.transform.Rotate(clock() * 0.001f, clock() * 0.001f, clock() * 0.001f);
+                shader.SetUniform("model_matrix", shovel1.transform.GetModelMatrix());
+                shader.SetUniform("normal_matrix", shovel1.transform.GetNormalMatrix());
                 shovel1.transform.LoadIdentity();
                 shovel1.Render();
 

@@ -9,7 +9,7 @@ namespace ORC_NAMESPACE
         Texture2D::Texture2D(const string& path, TextureWrapping wrapping, TextureFiltering filtering)
         {
                 // TODO: fix mip map generation 
-                Image img = ResourceLoader::LoadImage(path);
+                ImageData img = ResourceLoader::LoadPNG(path);
 
                 glGenTextures(1, &_textureID);
 

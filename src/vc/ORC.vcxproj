@@ -84,6 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -100,6 +101,7 @@
       <SDLCheck>true</SDLCheck>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -118,6 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -138,6 +141,7 @@
       <SDLCheck>true</SDLCheck>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -154,9 +158,11 @@
     <ClCompile Include="..\common\entity.cpp" />
     <ClCompile Include="..\common\generic_shader.cpp" />
     <ClCompile Include="..\common\mesh.cpp" />
+    <ClCompile Include="..\common\png.cpp" />
     <ClCompile Include="..\common\resource_loader.cpp" />
     <ClCompile Include="..\common\shader.cpp" />
     <ClCompile Include="..\common\texture.cpp" />
+    <ClCompile Include="..\common\tiny_obj_loader.cpp" />
     <ClCompile Include="..\common\transformation3d.cpp" />
     <ClCompile Include="..\common\uniform_buffer.cpp" />
     <ClCompile Include="..\common\util.cpp" />
@@ -169,13 +175,14 @@
     <ClInclude Include="..\common\error_codes.h" />
     <ClInclude Include="..\common\config.h" />
     <ClInclude Include="..\common\generic_shader.h" />
-    <ClInclude Include="..\common\image.h" />
     <ClInclude Include="..\common\mesh.h" />
     <ClInclude Include="..\common\resource_loader.h" />
+    <ClInclude Include="..\common\resource_types.h" />
     <ClInclude Include="..\common\scope_guard.h" />
     <ClInclude Include="..\common\shader.h" />
-    <ClInclude Include="..\common\shader_slots.h" />
+    <ClInclude Include="..\common\vertex_attributes.h" />
     <ClInclude Include="..\common\texture.h" />
+    <ClInclude Include="..\common\tiny_obj_loader.h" />
     <ClInclude Include="..\common\transformation3d.h" />
     <ClInclude Include="..\common\uniform_buffer.h" />
     <ClInclude Include="..\common\util.h" />

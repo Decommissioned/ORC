@@ -20,6 +20,8 @@ namespace ORC_NAMESPACE
 
                 OPENGL_INITIALIZATION,
 
+                OPENGL_MESH_INVALID,
+
                 OPENGL_SHADER_COMPILATION,
                 OPENGL_SHADER_LINKING,
                 OPENGL_SHADER_VALIDATION,
@@ -29,7 +31,8 @@ namespace ORC_NAMESPACE
 
                 IO_FILE_NOT_FOUND,
                 IO_FILE_OPEN,
-                IO_LOAD_PNG
+                IO_LOAD_PNG,
+                IO_LOAD_OBJ
         };
 
 };
