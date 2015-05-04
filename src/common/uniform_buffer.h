@@ -5,7 +5,7 @@
 
 namespace ORC_NAMESPACE
 {
-
+        // GLSL layout std140 may require padding, read the specification
         class UniformBuffer final
         {
 
