@@ -3,6 +3,7 @@
 
 #include "config.h"
 
+#include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
 
 namespace ORC_NAMESPACE
@@ -20,10 +21,12 @@ namespace ORC_NAMESPACE
 
                 void LoadIdentity();
 
-                const float* GetMatrixPointer() const;
+                const float* GetModelMatrix() const;
+                const float* GetNormalMatrix() const;
 
         private:
-                glm::mat4 data;
+                glm::mat4 _model;
+                glm::mat4 _normal;
         };
 };
 
