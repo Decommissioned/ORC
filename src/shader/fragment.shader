@@ -2,10 +2,14 @@
 
 uniform sampler2D sampler;
 
-uniform vec3 K; // Ka, Kd, Ks
+uniform vec3 Ka;
+uniform vec3 Kd;
+uniform vec3 Ks;
+
 uniform float reflectivity;
 uniform float roughness;
 
+uniform vec3 sun;
 
 // IO variables section
 
@@ -23,13 +27,12 @@ out vec4 result;
 
 void main()
 {
-
-        float diffuse = dot(interpolated.normal, sun) * K.y;
         
-        vec3 reflection = reflect(-sun, interpolated.normal);
-        float specular = dot(reflection, normalize(eye - interpolated.position));
-        specular = K.z * reflectivity * pow(clamp(specular, 0.0, 1.0), roughness);
-
-        result = (clamp(diffuse, 0.0, 1.0 ) + vec4(specular)) * texture(sampler, interpolated.uv);
-        result = clamp(result, vec4(ambient * K.x, 0.0), vec4(0.9));
+        // Directional light source (sun)
+        
+        vec3  ambient_light = Ka * ambient;
+        vec3  diffuse_light = Kd * dot(sun, interpolated.normal);
+        vec3 specular_light = Ks * pow(max(dot(reflectivity * reflect(sun, interpolated.normal), normalize(interpolated.position - eye)), 0.0), roughness);
+        
+        result = vec4(ambient_light + diffuse_light + specular_light, 1.0);
 }

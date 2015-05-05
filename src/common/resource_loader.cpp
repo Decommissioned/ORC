@@ -5,12 +5,9 @@
 
 #include "tiny_obj_loader.h"
 
-extern int decodePNG(std::vector<unsigned char>& out_image, unsigned long& image_width, unsigned long& image_height, const unsigned char* in_png, size_t in_size, bool convert_to_rgba32);
-
-static const string img_folder = "../image/";
-static const string mesh_folder = "../mesh/";
-
 #include <iostream>
+
+extern int decodePNG(std::vector<unsigned char>& out_image, unsigned long& image_width, unsigned long& image_height, const unsigned char* in_png, size_t in_size, bool convert_to_rgba32);
 
 namespace ORC_NAMESPACE
 {
@@ -20,7 +17,7 @@ namespace ORC_NAMESPACE
                 MeshData data;
                 vector<tinyobj::shape_t> shapes;
                 vector<tinyobj::material_t> materials;
-                string error = tinyobj::LoadObj(shapes, materials, (mesh_folder + path).c_str(), "./");
+                string error = tinyobj::LoadObj(shapes, materials, (ORC_MESH_FOLDER_RELATIVE_PATH + path).c_str(), "./");
 
                 if (!error.empty())
                 {
@@ -46,7 +43,7 @@ namespace ORC_NAMESPACE
         {
                 ImageData img;
 
-                vector<uint8> data = util::ReadFileBinary(img_folder + path);
+                vector<uint8> data = util::ReadFileBinary(ORC_TEXTURE_FOLDER_RELATIVE_PATH + path);
                 
                 unsigned long width, height;
 
