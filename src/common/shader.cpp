@@ -9,6 +9,8 @@
 #include <iostream>
 
 #include <regex>
+#include <stack>
+#include <tuple>
 
 namespace ORC_NAMESPACE
 {
@@ -17,23 +19,32 @@ namespace ORC_NAMESPACE
         {
                 // Load the actual file's content
                 static const string folder = ORC_SHADER_FOLDER_RELATIVE_PATH;
-                string content = util::ReadFileText(folder + path);
+                string content = util::ReadFileText(folder + path).c_str(); // Converting to a C string removes the null terminator, which is important since that could introduce a null terminator in the middle of the source code after replacing include files
 
                 // Search for include directives and replace them with their file's content
                 static const std::regex rgx_include(R"(^[ \t]*#pragma[ \t]+include[ \t]*\([ \t]*"(\S+))"R"("[ \t]*\)[ \t]*$)");
                 std::match_results<std::string::const_iterator> match;
-
+                std::stack<std::tuple<size_t, size_t, string>> replaces;
+                
                 for (std::string::const_iterator start = content.begin();
                      std::regex_search(start, content.cend(), match, rgx_include);
                      start = match[0].second)
                 {
-                        std::size_t offset = match.position();
-                        string directive = match[0];
-                        string file = match[1];
-
                         // Recursively load subsequently included files
                         // TODO: infinite recursion detection (i.e. circular include directives)
-                        content.replace(offset, directive.length(), ReadShaderFile(file));
+                        string directive = match[0];
+                        replaces.emplace(match.position(), directive.length(), ReadShaderFile(match[1]));
+                }
+
+                while (!replaces.empty())
+                {
+                        auto tuple = replaces.top();
+                        size_t offset = std::get<0>(tuple);
+                        size_t length = std::get<1>(tuple);
+                        string potato = std::get<2>(tuple);
+
+                        content.replace(offset, length, potato);
+                        replaces.pop();
                 }
 
                 return content;
