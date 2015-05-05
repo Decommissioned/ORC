@@ -21,10 +21,12 @@ out data
 
 void main()
 {
-        mat4 MVP = projection * view * model_matrix;
-        gl_Position = MVP * vec4(position.xyz, 1.0);
+        vec4 transformed_postion = model_matrix * vec4(position, 1.0);
+        
+        mat4 VP = projection * view;
+        gl_Position = VP * transformed_postion;
                
-        output.position = position;
+        output.position = transformed_postion.xyz;
         output.uv = uv;
-        output.normal = normalize(mat3(normal_matrix) * normal);
+        output.normal = mat3(normal_matrix) * normal;
 }
