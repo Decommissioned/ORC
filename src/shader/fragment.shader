@@ -1,24 +1,17 @@
-#version 400 core
-
-// Uniforms section
-
-layout(std140)
-uniform global
-{
-        mat4 projection;
-        mat4 view;
-        vec3 eye;     // Position of the camera
-        vec3 sun;     // Directional light (i.e. sun's light rays)
-        vec3 ambient; // Global ambient light
-        float render_distance;
-};
+#pragma include("master.shader")
 
 uniform sampler2D sampler;
+
+uniform vec3 K; // Ka, Kd, Ks
+uniform float reflectivity;
+uniform float roughness;
+
 
 // IO variables section
 
 in data
 {
+        vec3 position;
         vec2 uv;
         vec3 normal;
 	
@@ -28,12 +21,15 @@ out vec4 result;
 
 // Program logic section
 
-// TODO: light calculation
-
 void main()
 {
 
-        float lambert_reflection = dot(interpolated.normal, sun);
+        float diffuse = dot(interpolated.normal, sun) * K.y;
+        
+        vec3 reflection = reflect(-sun, interpolated.normal);
+        float specular = dot(reflection, normalize(eye - interpolated.position));
+        specular = K.z * reflectivity * pow(clamp(specular, 0.0, 1.0), roughness);
 
-        result = clamp(lambert_reflection, 0.1, 1.0)  * texture(sampler, interpolated.uv);
+        result = (clamp(diffuse, 0.0, 1.0 ) + vec4(specular)) * texture(sampler, interpolated.uv);
+        result = clamp(result, vec4(ambient * K.x, 0.0), vec4(0.9));
 }
