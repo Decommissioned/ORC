@@ -17,9 +17,10 @@ namespace ORC_NAMESPACE
 
         static std::list<std::pair<uint32, void*>> _windows;
 
-        static std::list<std::pair<uint32, DisplayManager::MouseCallback>> _mouse;
+        static std::list<std::pair<uint32, DisplayManager::MouseButtonCallback>> _mouse_button;
         static std::list<std::pair<uint32, DisplayManager::KeyboardCallback>> _keyboard;
         static std::list<std::pair<uint32, DisplayManager::MouseMovementCallback>> _mouse_movement;
+        static std::list<std::pair<uint32, DisplayManager::MouseWheelCallback>> _mouse_wheel;
 
         void GLInit()
         {
@@ -41,29 +42,28 @@ namespace ORC_NAMESPACE
 
         static void KeyboardEventHandler(SDL_KeyboardEvent& e)
         {
+                if (e.repeat) return;
+
                 for (auto& pair : _keyboard)
-                {
-                        if (pair.first == 0 || pair.first == e.windowID)
-                                pair.second(e.keysym.sym, e.state != 0);
-                }
+                        if (pair.first == 0 || pair.first == e.windowID) pair.second(e.keysym.sym, e.state != 0);
         }
 
-        static void MouseEventHandler(SDL_MouseButtonEvent& e)
+        static void MouseButtonEventHandler(SDL_MouseButtonEvent& e)
         {
-                for (auto& pair : _mouse)
-                {
-                        if (pair.first == 0 || pair.first == e.windowID)
-                                pair.second(e.button, e.state != 0);
-                }
+                for (auto& pair : _mouse_button)
+                        if (pair.first == 0 || pair.first == e.windowID) pair.second(e.button, e.state != 0);
         }
 
         static void MouseMovementEventHandler(SDL_MouseMotionEvent& e)
         {
                 for (auto& pair : _mouse_movement)
-                {
-                        if (pair.first == 0 || pair.first == e.windowID)
-                                pair.second(e.xrel, e.yrel);
-                }
+                        if (pair.first == 0 || pair.first == e.windowID) pair.second(e.xrel, e.yrel);
+        }
+
+        static void MouseWheelEventHandler(SDL_MouseWheelEvent& e)
+        {
+                for (auto& pair : _mouse_wheel)
+                        if (pair.first == 0 || pair.first == e.windowID) pair.second(e.y);
         }
 
         void DisplayManager::EnterMessageLoop()
@@ -83,10 +83,13 @@ namespace ORC_NAMESPACE
                                 break;
                         case SDL_MOUSEBUTTONDOWN:
                         case SDL_MOUSEBUTTONUP:
-                                MouseEventHandler(e.button);
+                                MouseButtonEventHandler(e.button);
                                 break;
                         case SDL_MOUSEMOTION:
                                 MouseMovementEventHandler(e.motion);
+                                break;
+                        case SDL_MOUSEWHEEL:
+                                MouseWheelEventHandler(e.wheel);
                                 break;
                         case SDL_KEYDOWN:
                         case SDL_KEYUP:
@@ -148,9 +151,9 @@ namespace ORC_NAMESPACE
                                         if (itr->first == windowID) _keyboard.erase(itr++);
                                         else itr++;
                                 }
-                                for (auto itr = _mouse.begin(); itr != _mouse.end();)
+                                for (auto itr = _mouse_button.begin(); itr != _mouse_button.end();)
                                 {
-                                        if (itr->first == windowID) _mouse.erase(itr++);
+                                        if (itr->first == windowID) _mouse_button.erase(itr++);
                                         else itr++;
                                 }
                                 for (auto itr = _mouse_movement.begin(); itr != _mouse_movement.end();)
@@ -167,9 +170,10 @@ namespace ORC_NAMESPACE
                 if (_ref_count == 0)
                 {
                         SDL_QuitSubSystem(SDL_INIT_VIDEO);
-                        _mouse.clear();
+                        _mouse_button.clear();
                         _keyboard.clear();
                         _mouse_movement.clear();
+                        _mouse_wheel.clear();
                         ExitRequested = true;
                 }
         }
@@ -223,19 +227,24 @@ namespace ORC_NAMESPACE
                 }
         }
 
-        void DisplayManager::AddMouseHandler(uint32 windowID, MouseCallback& callback)
+        void DisplayManager::AddMouseButtonHandler(uint32 windowID, MouseButtonCallback& callback)
         {
-                _mouse.emplace_back(std::make_pair(windowID, callback));
+                _mouse_button.emplace_back(windowID, callback);
         }
 
         void DisplayManager::AddKeyboardHandler(uint32 windowID, KeyboardCallback& callback)
         {
-                _keyboard.emplace_back(std::make_pair(windowID, callback));
+                _keyboard.emplace_back(windowID, callback);
         }
 
         void DisplayManager::AddMouseMovementHandler(uint32 windowID, MouseMovementCallback& callback)
         {
-                _mouse_movement.emplace_back(std::make_pair(windowID, callback));
+                _mouse_movement.emplace_back(windowID, callback);
+        }
+
+        void DisplayManager::AddMouseWheelHandler(uint32 windowID, MouseWheelCallback& callback)
+        {
+                _mouse_wheel.emplace_back(windowID, callback);
         }
 
         bool DisplayManager::ExitRequested = false;
