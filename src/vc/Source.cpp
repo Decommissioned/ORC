@@ -108,9 +108,9 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
         orc::Entity dragon = orc::Entity(mesh.ID(), mesh.Count(), shader.ID(), texture.ID());
 
-        vec3 Ka = {0.5f, 0.8f, 0.6f};
-        vec3 Kd = {0.8f, 0.6f, 0.5f};
-        vec3 Ks = {0.6f, 0.5f, 0.8f};
+        vec3 Ka = {0.4f, 0.4f, 0.4f};
+        vec3 Kd = {0.8f, 0.8f, 0.8f};
+        vec3 Ks = {0.8f, 0.8f, 0.8f};
         float reflectivity = 0.50;
         float roughness = 5.0;
 

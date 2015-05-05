@@ -65,7 +65,7 @@ namespace ORC_NAMESPACE
                                 return;
                         }
                 }
-                throw Error::OPENGL_INVALID_UNIFORM_NAME;
+                // throw Error::OPENGL_INVALID_UNIFORM_NAME;
                 
         }
 
