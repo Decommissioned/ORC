@@ -36,11 +36,24 @@ using glm::mat4; using glm::mat3; using glm::mat2;
 using glm::vec4; using glm::vec3; using glm::vec2;
 
 static bool wireframe = false;
+static bool move = false;
+
+void MouseButtonHandler(orc::uint8 button, bool down)
+{
+        if (button == 1)
+        {
+                if (down) move = true;
+                else move = false;
+        }
+}
 
 void MouseMotionHandler(orc::int16 dx, orc::int16 dy)
 {
-        object_position.y -= dy * 0.025f;
-        object_position.x -= dx * 0.025f;
+        if (move)
+        {
+                object_position.y -= dy * 0.025f;
+                object_position.x -= dx * 0.025f;
+        }
 }
 
 void MouseWheelHandler(orc::int16 m)
@@ -50,7 +63,6 @@ void MouseWheelHandler(orc::int16 m)
 
 void KeyboardHandler(char key, bool down)
 {
-        if (down) std::cout << key << std::endl;
         if (down && key == 'w') wireframe = !wireframe;
 }
 
@@ -61,6 +73,7 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         DM::AddMouseMovementHandler(windowID, DM::MouseMovementCallback(MouseMotionHandler));
         DM::AddMouseWheelHandler(windowID, DM::MouseWheelCallback(MouseWheelHandler));
         DM::AddKeyboardHandler(windowID, DM::KeyboardCallback(KeyboardHandler));
+        DM::AddMouseButtonHandler(windowID, DM::MouseButtonCallback(MouseButtonHandler));
 
         glClearColor(r, g, b, 1.0f);
 
@@ -90,7 +103,7 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         orc::Mesh mesh("dragon.obj");
         mesh.Bind();
 
-        orc::Texture2D texture("jade.png");
+        orc::Texture2D texture("marble.png");
         texture.Bind();
 
         orc::Entity dragon = orc::Entity(mesh.ID(), mesh.Count(), shader.ID(), texture.ID());
