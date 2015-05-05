@@ -34,5 +34,5 @@ void main()
         vec3  diffuse_light = Kd * dot(sun, interpolated.normal);
         vec3 specular_light = Ks * pow(max(dot(reflectivity * reflect(sun, interpolated.normal), normalize(interpolated.position - eye)), 0.0), roughness);
         
-        result = vec4(ambient_light + diffuse_light + specular_light, 1.0);
+        result = vec4(ambient_light + diffuse_light + specular_light, 1.0) * texture(sampler, interpolated.uv);
 }
