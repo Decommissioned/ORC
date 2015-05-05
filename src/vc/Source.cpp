@@ -30,22 +30,37 @@ extern void HideConsoleWindow();
 
 using DM = orc::DisplayManager;
 
-glm::vec3 dragon_position = {0.0f, -4.5f, 13.0f};
+glm::vec3 object_position = {0.0f, 0.0f, 13.0f};
 
 using glm::mat4; using glm::mat3; using glm::mat2;
 using glm::vec4; using glm::vec3; using glm::vec2;
 
+static bool wireframe = false;
+
 void MouseMotionHandler(orc::int16 dx, orc::int16 dy)
 {
+        object_position.y -= dy * 0.025f;
+        object_position.x -= dx * 0.025f;
+}
 
+void MouseWheelHandler(orc::int16 m)
+{
+        object_position.z += m;
+}
+
+void KeyboardHandler(char key, bool down)
+{
+        if (down) std::cout << key << std::endl;
+        if (down && key == 'w') wireframe = !wireframe;
 }
 
 void Render(orc::uint32 windowID, float r, float g, float b)
 {
         DM::CreateOpenGLContext(windowID);
 
-        auto func = DM::MouseMovementCallback(MouseMotionHandler);
-        DM::AddMouseMovementHandler(windowID, func);
+        DM::AddMouseMovementHandler(windowID, DM::MouseMovementCallback(MouseMotionHandler));
+        DM::AddMouseWheelHandler(windowID, DM::MouseWheelCallback(MouseWheelHandler));
+        DM::AddKeyboardHandler(windowID, DM::KeyboardCallback(KeyboardHandler));
 
         glClearColor(r, g, b, 1.0f);
 
@@ -75,18 +90,18 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         orc::Mesh mesh("dragon.obj");
         mesh.Bind();
 
-        orc::Texture2D texture("marble.png");
+        orc::Texture2D texture("jade.png");
         texture.Bind();
 
         orc::Entity dragon = orc::Entity(mesh.ID(), mesh.Count(), shader.ID(), texture.ID());
 
-        vec3 Ka = {0.5f, 0.5f, 0.5f};
+        vec3 Ka = {0.5f, 0.8f, 0.6f};
         vec3 Kd = {0.8f, 0.6f, 0.5f};
         vec3 Ks = {0.6f, 0.5f, 0.8f};
-        vec3 sun = {1.0f, 1.0f, 0.0f};
-
         float reflectivity = 0.50;
         float roughness = 5.0;
+
+        vec3 sun = {1.0f, 1.0f, 0.0f};
 
         shader.SetUniform("Ka", &Ka);
         shader.SetUniform("Kd", &Kd);
@@ -100,7 +115,7 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         while (!DM::ExitRequested)
         {
 
-                dragon.transform.Translate(dragon_position.x, dragon_position.y, dragon_position.z);
+                dragon.transform.Translate(object_position.x, object_position.y, object_position.z);
                 dragon.transform.Rotate(0.0f, clock() * 0.001f, 0.0f);
                 shader.SetUniform("model_matrix", dragon.transform.GetModelMatrix());
                 shader.SetUniform("normal_matrix", dragon.transform.GetNormalMatrix());
@@ -110,6 +125,9 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
                 DM::Present(windowID);
                 std::this_thread::sleep_for(std::chrono::microseconds(16667));
+
+                if (wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
         DM::DestroyWindow(windowID);
 }
