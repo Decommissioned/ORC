@@ -24,7 +24,7 @@ namespace ORC_NAMESPACE
         void UniformBuffer::_Update(const void* data, uint32 length)
         {
                 glBindBuffer(GL_UNIFORM_BUFFER, _bufferID);
-                glBufferData(GL_UNIFORM_BUFFER, length, data, GL_DYNAMIC_DRAW);
+                glBufferData(GL_UNIFORM_BUFFER, length, data, GL_STREAM_DRAW);
                 glBindBufferBase(GL_UNIFORM_BUFFER, _binding_point, _bufferID);
         }
 

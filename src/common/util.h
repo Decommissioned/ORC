@@ -8,7 +8,7 @@ namespace ORC_NAMESPACE
         namespace util
         {
 
-                std::size_t FileSize(const string& path);
+                size_t FileSize(const string& path);
 
                 string ReadFileText(const string& path);
                 vector<uint8> ReadFileBinary(const string& path);

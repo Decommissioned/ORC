@@ -6,6 +6,11 @@
 namespace ORC_NAMESPACE
 {
 
+        /*
+        Generic shader with automated uniform name detection and binding.
+        Please note that this class emphasizes correctness & convenience over speed, it's helpful when developing a lot of new shader code.
+        When finished it's recommended to implement a specific shader class for it.
+        */
         class GenericShader : public Shader
         {
 

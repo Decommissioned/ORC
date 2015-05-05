@@ -11,7 +11,7 @@ namespace ORC_NAMESPACE
         namespace util
         {
 
-                std::size_t FileSize(const string& path)
+                size_t FileSize(const string& path)
                 {
                         struct stat st;
 
@@ -23,7 +23,7 @@ namespace ORC_NAMESPACE
 
                 string ReadFileText(const string& path)
                 {
-                        std::size_t length = FileSize(path);
+                        size_t length = FileSize(path);
                         std::ifstream file(path);
                         string content(length, 0);
 
@@ -34,7 +34,7 @@ namespace ORC_NAMESPACE
 
                 vector<uint8> ReadFileBinary(const string& path)
                 {
-                        std::size_t length = FileSize(path);
+                        size_t length = FileSize(path);
                         std::ifstream file(path, std::ios::binary);
                         vector<uint8> data(length);
 

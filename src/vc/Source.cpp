@@ -30,12 +30,11 @@ extern void HideConsoleWindow();
 
 using DM = orc::DisplayManager;
 
-glm::vec3 dragon_pos = {-0.5f, 0.0f, 2.0f};
+glm::vec3 dragon_pos = {0.0f, -5.0f, 12.0f};
 
 void MouseMotionHandler(orc::int16 dx, orc::int16 dy)
 {
-        dragon_pos.x -= dx * 0.01f;
-        dragon_pos.z += dy * 0.025f;
+
 }
 
 void Render(orc::uint32 windowID, float r, float g, float b)
@@ -87,14 +86,22 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         };
 
         Transformation transformation;
-        transformation.ambient = { 1.00f, 1.00f, 1.00f };
-        transformation.sun = glm::normalize(glm::vec3(1.0f,-1.0f,0.0f));
+        transformation.ambient = { 0.1f, 0.1f, 0.1f };
+        transformation.sun = glm::normalize(glm::vec3(1.0f,1.0f,0.0f));
         transformation.eye = { 0.0f, 0.0f, -1.0f };
         transformation.view =  glm::lookAt(transformation.eye, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         transformation.projection = glm::perspectiveFov<float>(45.0f, 640.0f, 480.0f, 0.01f, 1000.0f);
 
         orc::GenericShader shader = orc::GenericShader();
         shader.Bind();
+
+        glm::vec3 K = {0.1, 0.8, 0.8};
+        float reflectivity = 0.85f;
+        float roughness = 0.5f;
+
+        shader.SetUniform("K", &K);
+        shader.SetUniform("reflectivity", &reflectivity);
+        shader.SetUniform("roughness", &roughness);
 
         orc::UniformBuffer ubo(shader.ID(), "global");
         ubo.Update(transformation);
@@ -114,7 +121,7 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         {
 
                 shovel1.transform.Translate(dragon_pos.x, dragon_pos.y, dragon_pos.z);
-                shovel1.transform.Rotate(clock() * 0.001f, clock() * 0.001f, clock() * 0.001f);
+                shovel1.transform.Rotate(0.0f, clock() * 0.001f, 0.0f);
                 shader.SetUniform("model_matrix", shovel1.transform.GetModelMatrix());
                 shader.SetUniform("normal_matrix", shovel1.transform.GetNormalMatrix());
                 shovel1.transform.LoadIdentity();
@@ -128,18 +135,12 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
 int main(int argc, char**argv)
 {
-        auto hwnd1 = DM::CreateWindow("Window A", 640, 480);
+        auto hwnd1 = DM::CreateWindow("Window A", 800, 600);
         std::thread t1(Render, hwnd1, 0.1f, 0.1f, 0.2f);
-        //auto hwnd2 = DM::CreateWindow("Window B", 640, 480);
-        //std::thread t2(Render, hwnd2, 0.1f, 0.2f, 0.1f);
-        //auto hwnd3 = DM::CreateWindow("Window C", 640, 480);
-        //std::thread t3(Render, hwnd3, 0.2f, 0.1f, 0.1f);
 
         DM::EnterMessageLoop();
 
         t1.join();
-        //t2.join();
-        //t3.join();
 
         return 0;
 }

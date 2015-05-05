@@ -10,6 +10,7 @@ using ErrorCode = uint16_t;
 #include <vector>
 using std::string;
 using std::vector;
+using std::size_t;
 
 #define ORC_NAMESPACE orc
 
@@ -30,6 +31,7 @@ namespace ORC_NAMESPACE
 #if _MSC_VER
 #define THREAD_LOCAL_STORAGE __declspec(thread)
 #define ALIGN_AS(size) __declspec(align(size))
+#define ORC_SHADER_FOLDER_RELATIVE_PATH "../shader/"
 #else
 #error Unsupported platform
 #endif

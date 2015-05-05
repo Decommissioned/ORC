@@ -20,7 +20,7 @@ namespace ORC_NAMESPACE
                 MeshData data;
                 vector<tinyobj::shape_t> shapes;
                 vector<tinyobj::material_t> materials;
-                string error = tinyobj::LoadObj(shapes, materials, (mesh_folder + path).c_str(), nullptr);
+                string error = tinyobj::LoadObj(shapes, materials, (mesh_folder + path).c_str(), "./");
 
                 if (!error.empty())
                 {
