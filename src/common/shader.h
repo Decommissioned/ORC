@@ -23,7 +23,7 @@ namespace ORC_NAMESPACE
 
                 void BindAttribute(uint8 slot, const char* attribute);
 
-                static string ReadShaderFile(const char* path);
+                static string ReadShaderFile(const string& path);
                 static uint32 CompileShader(const string& source, uint32 type);
                 static uint32 CreateProgram(uint32 vertexID, uint32 fragmentID);
                 static void LinkProgram(uint32 programID);

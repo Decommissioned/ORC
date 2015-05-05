@@ -8,13 +8,35 @@
 #include <fstream>
 #include <iostream>
 
+#include <regex>
+
 namespace ORC_NAMESPACE
 {
 
-        string Shader::ReadShaderFile(const char* path)
+        string Shader::ReadShaderFile(const string& path)
         {
-                const string folder = "../shader/";
-                return util::ReadFileText(folder + path);
+                // Load the actual file's content
+                static const string folder = ORC_SHADER_FOLDER_RELATIVE_PATH;
+                string content = util::ReadFileText(folder + path);
+
+                // Search for include directives and replace them with their file's content
+                static const std::regex rgx_include(R"(^[ \t]*#pragma[ \t]+include[ \t]*\([ \t]*"(\S+))"R"("[ \t]*\)[ \t]*$)");
+                std::match_results<std::string::const_iterator> match;
+
+                for (std::string::const_iterator start = content.begin();
+                     std::regex_search(start, content.cend(), match, rgx_include);
+                     start = match[0].second)
+                {
+                        std::size_t offset = match.position();
+                        string directive = match[0];
+                        string file = match[1];
+
+                        // Recursively load subsequently included files
+                        // TODO: infinite recursion detection (i.e. circular include directives)
+                        content.replace(offset, directive.length(), ReadShaderFile(file));
+                }
+
+                return content;
         }
 
         uint32 Shader::CompileShader(const string& source, GLenum type)
