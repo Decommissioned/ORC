@@ -8,6 +8,10 @@
 namespace ORC_NAMESPACE
 {
 
+        /*
+        Resource Loader
+        Exposes methods to load certain types of files and return their respective content in a structured format
+        */
         class ResourceLoader final
         {
 
@@ -15,6 +19,7 @@ namespace ORC_NAMESPACE
 
                 static MeshData LoadOBJ(const string& path);
                 static ImageData LoadPNG(const string& path);
+                static string LoadShader(const string& path);
 
         private:
 

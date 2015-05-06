@@ -5,6 +5,10 @@
 
 namespace ORC_NAMESPACE
 {
+        /*
+        Util
+        Convenience methods that don't belong anywhere else
+        */
         namespace util
         {
 

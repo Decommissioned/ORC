@@ -29,6 +29,9 @@ namespace ORC_NAMESPACE
                 OPENGL_INVALID_UNIFORM_NAME,
                 OPENGL_INVALID_UNIFORM_TYPE,
 
+                OPENGL_UNIFORM_BUFFER_QUERY,
+                OPENGL_UNIFORM_BUFFER_FULL,
+
                 IO_FILE_NOT_FOUND,
                 IO_FILE_OPEN,
                 IO_LOAD_PNG,

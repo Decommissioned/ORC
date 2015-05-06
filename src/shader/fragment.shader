@@ -1,15 +1,12 @@
 #pragma include("master.shader")
 
 uniform sampler2D sampler;
+uniform vec3 sun;
 
+// Material data
 uniform vec3 Ka;
 uniform vec3 Kd;
 uniform vec3 Ks;
-
-uniform float reflectivity;
-uniform float roughness;
-
-uniform vec3 sun;
 
 // IO variables section
 
@@ -31,11 +28,15 @@ void main()
         // Directional light source (sun)
         
         vec3  ambient_light = Ka * ambient;
-        vec3  diffuse_light = Kd * dot(sun, interpolated.normal);
         
-        float specular_factor = dot(reflect(normalize(-sun), interpolated.normal), normalize(eye - interpolated.position));
-        specular_factor = max(specular_factor, 0.0);
-        vec3 specular_light = Ks * reflectivity * specular_factor * pow(specular_factor, roughness);
+        float diffuse_factor = max(dot(sun, interpolated.normal), 0.0);
+        vec3  diffuse_light = Kd * diffuse_factor;
         
-        result = vec4(ambient_light + diffuse_light + specular_light , 1.0) * texture(sampler, interpolated.uv);
+        vec3 sun_reflection = reflect(-sun, interpolated.normal);
+        float specular_factor = max(dot(sun_reflection, normalize(eye - interpolated.position)), 0.0);
+        vec3 specular_light = Ks * pow(specular_factor, light_damping);
+        
+        vec3 phong = ambient_light + diffuse_light + specular_light;
+        
+        result = vec4(phong, 1.0) * texture(sampler, interpolated.uv);
 }

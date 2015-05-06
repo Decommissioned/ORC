@@ -8,47 +8,8 @@
 #include <fstream>
 #include <iostream>
 
-#include <regex>
-#include <stack>
-#include <tuple>
-
 namespace ORC_NAMESPACE
 {
-
-        string Shader::ReadShaderFile(const string& path)
-        {
-                // Load the actual file's content
-                static const string folder = ORC_SHADER_FOLDER_RELATIVE_PATH;
-                string content = util::ReadFileText(folder + path).c_str(); // Converting to a C string removes the null terminator, which is important since that could introduce a null terminator in the middle of the source code after replacing include files
-
-                // Search for include directives and replace them with their file's content
-                static const std::regex rgx_include(R"(^[ \t]*#pragma[ \t]+include[ \t]*\([ \t]*"(\S+))"R"("[ \t]*\)[ \t]*$)");
-                std::match_results<std::string::const_iterator> match;
-                std::stack<std::tuple<size_t, size_t, string>> replaces;
-                
-                for (std::string::const_iterator start = content.begin();
-                     std::regex_search(start, content.cend(), match, rgx_include);
-                     start = match[0].second)
-                {
-                        // Recursively load subsequently included files
-                        // TODO: infinite recursion detection (i.e. circular include directives)
-                        string directive = match[0];
-                        replaces.emplace(match.position(), directive.length(), ReadShaderFile(match[1]));
-                }
-
-                while (!replaces.empty())
-                {
-                        auto tuple = replaces.top();
-                        size_t offset = std::get<0>(tuple);
-                        size_t length = std::get<1>(tuple);
-                        string potato = std::get<2>(tuple);
-
-                        content.replace(offset, length, potato);
-                        replaces.pop();
-                }
-
-                return content;
-        }
 
         uint32 Shader::CompileShader(const string& source, GLenum type)
         {
@@ -127,26 +88,10 @@ namespace ORC_NAMESPACE
 
         //////////////////////////////////////////////////////////////////////////
 
-        Shader::Shader(const char* vertex, const char* fragment)
+        Shader::Shader(const string& vertex_source, const string& fragment_source, std::initializer_list<std::pair<uint8, string>> attributes)
         {
-                string vertex_src = ReadShaderFile(vertex);
-                string frag_src = ReadShaderFile(fragment);
-                uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
-                uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
-
-                _programID = CreateProgram(vertexID, fragmentID);
-
-                LinkProgram(_programID);
-                DeleteShader(_programID, vertexID);
-                DeleteShader(_programID, fragmentID);
-        }
-
-        Shader::Shader(const char* vertex, const char* fragment, std::initializer_list<std::pair<uint8, string>> attributes)
-        {
-                string vertex_src = ReadShaderFile(vertex);
-                string frag_src = ReadShaderFile(fragment);
-                uint32 vertexID = CompileShader(vertex_src, GL_VERTEX_SHADER);
-                uint32 fragmentID = CompileShader(frag_src, GL_FRAGMENT_SHADER);
+                uint32 vertexID = CompileShader(vertex_source, GL_VERTEX_SHADER);
+                uint32 fragmentID = CompileShader(fragment_source, GL_FRAGMENT_SHADER);
 
                 _programID = CreateProgram(vertexID, fragmentID);
 
@@ -163,9 +108,10 @@ namespace ORC_NAMESPACE
                 glDeleteProgram(_programID);
         }
 
-        void Shader::Bind()
+        void Shader::Bind() const
         {
                 glUseProgram(_programID);
+                _bound_programID = _programID;
         }
 
         void Shader::BindAttribute(uint8 slot, const char* attribute)
@@ -177,5 +123,12 @@ namespace ORC_NAMESPACE
         {
                 return _programID;
         }
+
+        uint32 Shader::BoundID()
+        {
+                return _bound_programID;
+        }
+
+        THREAD_LOCAL_STORAGE uint32 Shader::_bound_programID = 0;
 
 };

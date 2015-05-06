@@ -8,6 +8,10 @@
 
 namespace ORC_NAMESPACE
 {
+        /*
+        Transformation3D
+        Exposes convenience methods to perform standard transformations
+        */
         class Transformation3D
         {
         public:

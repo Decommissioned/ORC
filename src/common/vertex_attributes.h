@@ -5,7 +5,9 @@
 
 namespace ORC_NAMESPACE
 {
-
+        /*
+        Slots layout for attribute arrays in VAOs and shader programs
+        */
         enum : uint8
         {
                 VERTEX_POSITION = 0,

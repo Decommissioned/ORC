@@ -1,54 +1,19 @@
 #include "mesh.h"
 #include "vertex_attributes.h"
 
-#include "resource_loader.h"
 #include "error_codes.h"
 
 #include <GL/glew.h>
 
-#include <iostream>
-
-// TODO: mesh class shouldn't handle loading files, move to renderer once implemented
-
 namespace ORC_NAMESPACE
 {
 
-        // TODO: change this method to take care of all attributes
-        Mesh::Mesh(const vector<float>& positions, const vector<uint32> indices, const vector<float>& UVs) :
-                _count(indices.size())
+        Mesh::Mesh(const MeshData& data)
         {
                 glGenVertexArrays(1, &_VAO);
                 glGenBuffers(_ATTRIBUTE_COUNT, _VBO);
 
-                glBindVertexArray(_VAO);
-
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _VBO[0]);
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * indices.size(), &indices.front(), GL_STATIC_DRAW);
-                
-                glBindBuffer(GL_ARRAY_BUFFER, _VBO[VERTEX_POSITION + 1]);
-                glBufferData(GL_ARRAY_BUFFER, sizeof(float) * positions.size(), &positions.front(), GL_STATIC_DRAW);
-                glVertexAttribPointer(VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-                glBindBuffer(GL_ARRAY_BUFFER, _VBO[VERTEX_UV + 1]);
-                glBufferData(GL_ARRAY_BUFFER, sizeof(float) * UVs.size(), &UVs.front(), GL_STATIC_DRAW);
-                glVertexAttribPointer(VERTEX_UV, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
-                glEnableVertexAttribArray(orc::VERTEX_POSITION);
-                glEnableVertexAttribArray(orc::VERTEX_UV);
-
-                glBindVertexArray(0);
-        }
-
-        // TODO: delete this method
-        Mesh::Mesh(const char* path)
-        {
-                MeshData data = ResourceLoader::LoadOBJ(path);
-                _count = data.indices.size();
-
-                glGenVertexArrays(1, &_VAO);
-                glGenBuffers(_ATTRIBUTE_COUNT, _VBO);
-
-                glBindVertexArray(_VAO);
+                Bind();
 
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _VBO[0]);
                 glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * data.indices.size(), &data.indices.front(), GL_STATIC_DRAW);
@@ -69,6 +34,7 @@ namespace ORC_NAMESPACE
                         glVertexAttribPointer(VERTEX_UV, 2, GL_FLOAT, GL_FALSE, 0, 0);
                         glEnableVertexAttribArray(orc::VERTEX_UV);
                 }
+                else glDisableVertexAttribArray(orc::VERTEX_UV);
 
                 if (data.normals.size() != 0)
                 {
@@ -78,8 +44,6 @@ namespace ORC_NAMESPACE
                         glEnableVertexAttribArray(orc::VERTEX_NORMAL);
                 }
                 else throw Error::OPENGL_MESH_INVALID;
-
-                glBindVertexArray(0);
         }
 
         Mesh::~Mesh()
@@ -88,9 +52,10 @@ namespace ORC_NAMESPACE
                 glDeleteVertexArrays(1, &_VAO);
         }
 
-        void Mesh::Bind()
+        void Mesh::Bind() const
         {
                 glBindVertexArray(_VAO);
+                _bound_VAO = _VAO;
         }
 
         void Mesh::Draw() const
@@ -107,5 +72,12 @@ namespace ORC_NAMESPACE
         {
                 return _VAO;
         }
+
+        uint32 Mesh::BoundID()
+        {
+                return _bound_VAO;
+        }
+
+        THREAD_LOCAL_STORAGE uint32 Mesh::_bound_VAO = 0;
 
 };

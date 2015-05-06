@@ -5,13 +5,17 @@
 
 namespace ORC_NAMESPACE
 {
-        // GLSL layout std140 may require padding, read the specification
+        /*
+        Uniform Buffer
+        Allows a buffer of data to be used in multiple shaders in one go
+        Requires std140 to function, if not familiar with it you may wish to search for it in the OpenGL spec.
+        */
         class UniformBuffer final
         {
 
         public:
 
-                UniformBuffer(uint32 programID, const string& name);
+                UniformBuffer(std::initializer_list<uint32> programIDs, const string& name);
                 ~UniformBuffer();
 
                 template<typename block>
@@ -25,11 +29,11 @@ namespace ORC_NAMESPACE
 
                 void _Update(const void* data, uint32 length);
 
-                uint32 _blockID;
                 uint32 _bufferID;
                 uint8 _binding_point;
 
                 static THREAD_LOCAL_STORAGE uint8 _next_binding_point;
+                static THREAD_LOCAL_STORAGE uint32 _max_binding_points;
         };
 
 };

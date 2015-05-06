@@ -6,7 +6,7 @@
 namespace ORC_NAMESPACE
 {
 
-        enum class TextureWrapping : uint32
+        enum class TextureWrapping
         {
                 REPEAT,
                 MIRRORED_REPEAT,
@@ -14,7 +14,7 @@ namespace ORC_NAMESPACE
                 CLAMP_TO_BORDER
         };
 
-        enum class TextureFiltering : uint32
+        enum class TextureFiltering
         {
                 NEAREST,
                 LINEAR,
@@ -22,11 +22,21 @@ namespace ORC_NAMESPACE
                 LINEAR_MIPMAP
         };
 
+        enum class TextureChannel
+        {
+                GRAYSCALE,
+                RGBA
+        };
+
+        /*
+        Texture2D
+        TODO: accept raw pixel data instead of actually loading the image
+        */
         class Texture2D final
         {
         public:
 
-                explicit Texture2D(const string& path, TextureWrapping wrapping, TextureFiltering filtering);
+                explicit Texture2D(const string& path, TextureWrapping wrapping, TextureFiltering filtering, TextureChannel channel);
                 explicit Texture2D(const string& path, TextureFiltering filtering);
                 explicit Texture2D(const string& path, TextureWrapping wrapping);
                 explicit Texture2D(const string& path);
@@ -34,14 +44,17 @@ namespace ORC_NAMESPACE
                 Texture2D(Texture2D&) = delete;
                 ~Texture2D();
 
-                void Bind();
+                void Bind() const;
                 uint32 ID() const;
+                static uint32 BoundID();
 
         private:
 
                 uint32 _wrapping_mode;
                 uint32 _filtering_mode;
                 uint32 _textureID;
+
+                THREAD_LOCAL_STORAGE static uint32 _bound_textureID;
         };
 
 };

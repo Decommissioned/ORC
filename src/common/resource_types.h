@@ -6,6 +6,7 @@
 namespace ORC_NAMESPACE
 {
 
+        // Minimum information required to create VBOs using the Mesh class
         struct MeshData
         {
                 vector<uint32> indices;
@@ -14,6 +15,7 @@ namespace ORC_NAMESPACE
                 vector<float> uvs;
         };
 
+        // Raw image data
         struct ImageData final
         {
                 vector<uint8> data;

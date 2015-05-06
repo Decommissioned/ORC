@@ -15,6 +15,7 @@ namespace ORC_NAMESPACE
         static std::mutex _mutex;
         static uint32 _ref_count = 0;
 
+        // Lists are used here because I didn't want to deal with iterators being invalidated
         static std::list<std::pair<uint32, void*>> _windows;
 
         static std::list<std::pair<uint32, DisplayManager::MouseButtonCallback>> _mouse_button;
@@ -45,25 +46,25 @@ namespace ORC_NAMESPACE
                 if (e.repeat) return;
 
                 for (auto& pair : _keyboard)
-                        if (pair.first == 0 || pair.first == e.windowID) pair.second(e.keysym.sym, e.state != 0);
+                        if (pair.first == e.windowID) pair.second(e.keysym.sym, e.state != 0);
         }
 
         static void MouseButtonEventHandler(SDL_MouseButtonEvent& e)
         {
                 for (auto& pair : _mouse_button)
-                        if (pair.first == 0 || pair.first == e.windowID) pair.second(e.button, e.state != 0);
+                        if (pair.first == e.windowID) pair.second(e.button, e.state != 0);
         }
 
         static void MouseMovementEventHandler(SDL_MouseMotionEvent& e)
         {
                 for (auto& pair : _mouse_movement)
-                        if (pair.first == 0 || pair.first == e.windowID) pair.second(e.xrel, e.yrel);
+                        if (pair.first == e.windowID) pair.second(e.xrel, e.yrel);
         }
 
         static void MouseWheelEventHandler(SDL_MouseWheelEvent& e)
         {
                 for (auto& pair : _mouse_wheel)
-                        if (pair.first == 0 || pair.first == e.windowID) pair.second(e.y);
+                        if (pair.first == e.windowID) pair.second(e.y);
         }
 
         void DisplayManager::EnterMessageLoop()
@@ -109,8 +110,9 @@ namespace ORC_NAMESPACE
                         if (SDL_InitSubSystem(SDL_INIT_VIDEO) != 0)
                                 throw Error::SDL_VIDEO_INITIALIZATION;
 
+                        // Requires OpenGL 3.0 or better
                         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-                        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+                        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
                         SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
                         SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
@@ -127,7 +129,7 @@ namespace ORC_NAMESPACE
                 _ref_count++;
 
                 uint32 windowID = SDL_GetWindowID(window);
-                _windows.emplace_back(std::make_pair(windowID, nullptr));
+                _windows.emplace_back(windowID, nullptr);
                 return windowID;
         }
 
@@ -227,22 +229,22 @@ namespace ORC_NAMESPACE
                 }
         }
 
-        void DisplayManager::AddMouseButtonHandler(uint32 windowID, MouseButtonCallback& callback)
+        void DisplayManager::AddMouseButtonHandler(uint32 windowID, MouseButtonCallback callback)
         {
                 _mouse_button.emplace_back(windowID, callback);
         }
 
-        void DisplayManager::AddKeyboardHandler(uint32 windowID, KeyboardCallback& callback)
+        void DisplayManager::AddKeyboardHandler(uint32 windowID, KeyboardCallback callback)
         {
                 _keyboard.emplace_back(windowID, callback);
         }
 
-        void DisplayManager::AddMouseMovementHandler(uint32 windowID, MouseMovementCallback& callback)
+        void DisplayManager::AddMouseMovementHandler(uint32 windowID, MouseMovementCallback callback)
         {
                 _mouse_movement.emplace_back(windowID, callback);
         }
 
-        void DisplayManager::AddMouseWheelHandler(uint32 windowID, MouseWheelCallback& callback)
+        void DisplayManager::AddMouseWheelHandler(uint32 windowID, MouseWheelCallback callback)
         {
                 _mouse_wheel.emplace_back(windowID, callback);
         }

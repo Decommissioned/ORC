@@ -157,5 +157,8 @@
     <None Include="..\shader\fragment.shader">
       <Filter>Resource Files\shader</Filter>
     </None>
+    <None Include="..\shader\master.shader">
+      <Filter>Resource Files\shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

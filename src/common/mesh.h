@@ -2,25 +2,32 @@
 #define _MESH_H
 
 #include "config.h"
+#include "resource_types.h"
 
 namespace ORC_NAMESPACE
 {
-
+        /*
+        Mesh
+        Loads the contents into vRAM using a vertex array object
+        */
         class Mesh
         {
 
         public:
 
-                Mesh(const vector<float>& positions, const vector<uint32> indices, const vector<float>& UVs);
-                Mesh(const char* path);
+                Mesh(const MeshData& data);
                 virtual ~Mesh();
 
-                void Bind();
+                void Bind() const;
                 void Draw() const;
-                uint32 ID() const;
+
                 uint32 Count() const;
+                uint32 ID() const;
+                static uint32 BoundID();
 
         protected:
+
+                THREAD_LOCAL_STORAGE static uint32 _bound_VAO;
 
                 const static uint8 _ATTRIBUTE_COUNT = 4;
 

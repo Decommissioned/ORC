@@ -5,15 +5,22 @@
 
 #include "transformation3d.h"
 
+#include "mesh.h"
+#include "generic_shader.h"
+#include "texture.h"
+
 namespace ORC_NAMESPACE
 {
 
+        /*
+        Entity
+        */
         class Entity
         {
 
         public:
 
-                Entity(uint32 mesh, uint32 vertices, uint32 program, uint32 texture);
+                Entity(GenericShader& shader, const Mesh& mesh, const Texture2D& texture);
                 virtual ~Entity();
 
                 Transformation3D transform;
@@ -22,10 +29,10 @@ namespace ORC_NAMESPACE
 
         protected:
 
-                uint32 _mesh;
-                uint32 _vertices;
-                uint32 _program;
-                uint32 _texture;
+                const Mesh& _mesh;
+                const Texture2D& _texture;
+
+                GenericShader& _shader;
 
         };
 

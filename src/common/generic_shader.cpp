@@ -1,6 +1,7 @@
 #include "generic_shader.h"
 #include "error_codes.h"
 #include "vertex_attributes.h"
+#include "resource_loader.h"
 
 #include <GL\glew.h>
 
@@ -8,7 +9,10 @@ namespace ORC_NAMESPACE
 {
 
         GenericShader::GenericShader()
-                : Shader("vertex.shader", "fragment.shader", {{VERTEX_POSITION, "position"}, {VERTEX_UV, "uv"}, {VERTEX_NORMAL, "normal"}})
+                : Shader(
+                ResourceLoader::LoadShader("vertex.shader"),
+                ResourceLoader::LoadShader("fragment.shader"),
+                {{VERTEX_POSITION, "position"}, {VERTEX_UV, "uv"}, {VERTEX_NORMAL, "normal"}})
         {
                 // Gets the list of uniform variable's names in the current program
                 int32 count;
@@ -36,6 +40,8 @@ namespace ORC_NAMESPACE
                 {
                         if (attribute.name == name)
                         {
+                                if (BoundID() != _programID) Bind();
+
                                 switch (attribute.type) // TODO: Think harder about a better way of handling this mess
                                 {
                                 case GL_FLOAT: glUniform1f(attribute.location, *((float*) data));
