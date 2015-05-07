@@ -21,7 +21,7 @@ namespace ORC_NAMESPACE
                 void Bind() const;
                 void Draw() const;
 
-                uint32 Count() const;
+                size_t Count() const;
                 uint32 ID() const;
                 static uint32 BoundID();
 
@@ -33,7 +33,7 @@ namespace ORC_NAMESPACE
 
                 uint32 _VAO;
                 uint32 _VBO[_ATTRIBUTE_COUNT];
-                uint32 _count;
+                size_t _count;
 
 
         };

@@ -10,6 +10,8 @@ namespace ORC_NAMESPACE
 
         Mesh::Mesh(const MeshData& data)
         {
+                _count = data.indices.size();
+
                 glGenVertexArrays(1, &_VAO);
                 glGenBuffers(_ATTRIBUTE_COUNT, _VBO);
 
@@ -43,7 +45,7 @@ namespace ORC_NAMESPACE
                         glVertexAttribPointer(VERTEX_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
                         glEnableVertexAttribArray(orc::VERTEX_NORMAL);
                 }
-                else throw Error::OPENGL_MESH_INVALID;
+                else glDisableVertexAttribArray(orc::VERTEX_NORMAL);
         }
 
         Mesh::~Mesh()
@@ -60,10 +62,10 @@ namespace ORC_NAMESPACE
 
         void Mesh::Draw() const
         {
-                glDrawElements(GL_TRIANGLES, _count, GL_UNSIGNED_INT, 0);
+                glDrawElements(GL_TRIANGLES, (GLsizei) _count, GL_UNSIGNED_INT, 0);
         }
 
-        uint32 Mesh::Count() const
+        size_t Mesh::Count() const
         {
                 return _count;
         }
