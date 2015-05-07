@@ -161,6 +161,8 @@
     <ClCompile Include="..\common\png.cpp" />
     <ClCompile Include="..\common\resource_loader.cpp" />
     <ClCompile Include="..\common\shader.cpp" />
+    <ClCompile Include="..\common\skydome.cpp" />
+    <ClCompile Include="..\common\skydome_shader.cpp" />
     <ClCompile Include="..\common\texture.cpp" />
     <ClCompile Include="..\common\tiny_obj_loader.cpp" />
     <ClCompile Include="..\common\transformation3d.cpp" />
@@ -180,6 +182,8 @@
     <ClInclude Include="..\common\resource_types.h" />
     <ClInclude Include="..\common\scope_guard.h" />
     <ClInclude Include="..\common\shader.h" />
+    <ClInclude Include="..\common\skydome.h" />
+    <ClInclude Include="..\common\skydome_shader.h" />
     <ClInclude Include="..\common\vertex_attributes.h" />
     <ClInclude Include="..\common\texture.h" />
     <ClInclude Include="..\common\tiny_obj_loader.h" />

@@ -28,6 +28,8 @@ extern void HideConsoleWindow();
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "../common/skydome.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 using DM = orc::DisplayManager;
@@ -39,6 +41,20 @@ bool wireframe = false;
 bool move = false;
 
 float z = 1.0f;
+
+struct Transformation
+{
+        mat4 projection;
+        mat4 view;
+        ALIGN_AS(16) vec3 eye;
+        ALIGN_AS(16) vec3 ambient;
+        ALIGN_AS(16) vec3 attenuation_factor;
+        float light_damping;
+        float render_distance;
+        float timestamp;
+};
+
+Transformation global;
 
 void MouseButtonHandler(orc::uint8 button, bool down)
 {
@@ -65,10 +81,18 @@ void MouseWheelHandler(orc::int16 m)
 
 void KeyboardHandler(char key, bool down)
 {
-        if (down && key == 'w') wireframe = !wireframe;
+        if (!down) return;
 
-        if (down && key == '1') z += 1.0f;
-        if (down && key == '2') z -= 1.0f;
+        if (key == 'w') global.eye.z += 0.05f;
+        if (key == 's') global.eye.z -= 0.05f;
+
+        if (key == 'd') global.eye.x -= 0.05f;
+        if (key == 'a') global.eye.x += 0.05f;
+
+        if (key == '1') z += 1.0f;
+        if (key == '2') z -= 1.0f;
+
+        global.view =  glm::lookAt(global.eye, global.eye + glm::vec3(0.0f, 0.0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Render(orc::uint32 windowID, float r, float g, float b)
@@ -82,42 +106,27 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
         glClearColor(r, g, b, 1.0f);
 
-        struct Transformation
-        {
-                mat4 projection;
-                mat4 view;
-                ALIGN_AS(16) vec3 eye;
-                ALIGN_AS(16) vec3 ambient;
-                ALIGN_AS(16) vec3 attenuation_factor;
-                float light_damping;
-                float render_distance;
-        };
-
-        Transformation transformation;
-        transformation.light_damping = 10.0f;
-        transformation.attenuation_factor = {1.0f, 0.0f, 0.0f};
-        transformation.ambient = {0.2f, 0.2f, 0.2f};
-        transformation.eye = {0.0f, 0.0f, -1.0f};
-        transformation.view =  glm::lookAt(transformation.eye, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        transformation.projection = glm::perspectiveFov<float>(45.0f, 1280.0f, 800.0f, 0.01f, 1000.0f);
+        global.light_damping = 10.0f;
+        global.attenuation_factor = {1.0f, 0.0f, 0.0f};
+        global.ambient = {0.2f, 0.2f, 0.2f};
+        global.eye = {0.0f, 0.0f, -1.0f};
+        global.view =  glm::lookAt(global.eye, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        global.projection = glm::perspectiveFov<float>(45.0f, 1280.0f, 800.0f, 0.01f, 1000.0f);
+        global.render_distance = 1000.0f;
 
         orc::GenericShader shader = orc::GenericShader();
-
-        orc::UniformBuffer ubo({shader.ID()}, "global");
-        ubo.Update(transformation);
-
         orc::Mesh mesh(orc::ResourceLoader::LoadOBJ("dragon.obj"));
-
         orc::Texture2D jade("jade.png");
-
+        orc::Texture2D clouds("dome.png");
         orc::Entity dragon = orc::Entity(shader, mesh, jade);
+        orc::Skydome sky(clouds);
+
+        orc::UniformBuffer ubo({shader.ID(), sky.ShaderID()}, "global");
 
         vec3 Ka = {0.9f, 0.9f, 0.9f};
         vec3 Kd = {0.5f, 0.5f, 0.5f};
         vec3 Ks = {0.8f, 0.8f, 0.8f};
-
         vec3 sun = glm::normalize(glm::vec3(1.0f, 1.0f, 0.0f));
-
         shader.SetUniform("Ka", &Ka);
         shader.SetUniform("Kd", &Kd);
         shader.SetUniform("Ks", &Ks);
@@ -127,18 +136,16 @@ void Render(orc::uint32 windowID, float r, float g, float b)
 
         while (!DM::ExitRequested)
         {
-                auto eli = std::chrono::system_clock::now();
-
-                if (wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
                 dragon.transform.Translate(object_position.x, object_position.y, object_position.z);
                 dragon.transform.Rotate(0.0f, clock() * 0.001f, 0.0f);
                 dragon.Render();
+
+                sky.Draw();
                 
                 DM::Present(windowID);
-                auto duration = std::chrono::system_clock::now() - eli;
-                std::this_thread::sleep_for(std::chrono::microseconds(16667) - std::chrono::duration_cast<std::chrono::microseconds>(duration));
+
+                global.timestamp = float(clock()) / float(CLOCKS_PER_SEC);
+                ubo.Update(global);
         }
         DM::DestroyWindow(windowID);
 }
