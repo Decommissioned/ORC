@@ -14,6 +14,7 @@ out data
         vec3 position;
         vec2 uv;
         vec3 normal;
+        float distance;
 
 } output;
 
@@ -23,10 +24,12 @@ void main()
 {
         vec4 transformed_postion = model_matrix * vec4(position, 1.0);
         
-        mat4 VP = projection * view;
-        gl_Position = VP * transformed_postion;
+        vec4 clip_coordinate = projection * view * transformed_postion;
+        
+        gl_Position = clip_coordinate;
                
         output.position = transformed_postion.xyz;
         output.uv = uv;
         output.normal = mat3(normal_matrix) * normal;
+        output.distance = clip_coordinate.w;
 }

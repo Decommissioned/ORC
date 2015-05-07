@@ -15,6 +15,7 @@ in data
         vec3 position;
         vec2 uv;
         vec3 normal;
+        float distance;
 	
 } interpolated;
 
@@ -39,4 +40,5 @@ void main()
         vec3 phong = ambient_light + diffuse_light + specular_light;
         
         result = vec4(phong, 1.0) * texture(sampler, interpolated.uv);
+        
 }

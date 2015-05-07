@@ -10,6 +10,7 @@ uniform global
         vec3 attenuation_factor;
         float light_damping;
         float render_distance;
+        float timestamp;
 };
 
 float calc_attenuation(float distance)
