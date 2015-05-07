@@ -43,7 +43,7 @@ namespace ORC_NAMESPACE
 
         static void KeyboardEventHandler(SDL_KeyboardEvent& e)
         {
-                if (e.repeat) return;
+                // if (e.repeat) return;
 
                 for (auto& pair : _keyboard)
                         if (pair.first == e.windowID) pair.second(e.keysym.sym, e.state != 0);

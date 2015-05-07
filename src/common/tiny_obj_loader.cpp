@@ -440,7 +440,7 @@ namespace tinyobj
                 return true;
         }
 
-        std::string LoadMtl(std::map<std::string, int> &material_map,
+        std::string LoadMtl(std::map<std::string, std::size_t> &material_map,
                             std::vector<material_t> &materials,
                             std::istream &inStream)
         {
@@ -492,7 +492,7 @@ namespace tinyobj
                                 if (!material.name.empty())
                                 {
                                         material_map.insert(
-                                                std::pair<std::string, int>(material.name, materials.size()));
+                                                std::pair<std::string, size_t>(material.name, materials.size()));
                                         materials.push_back(material);
                                 }
 
@@ -654,7 +654,7 @@ namespace tinyobj
                 }
                 // flush last material.
                 material_map.insert(
-                        std::pair<std::string, int>(material.name, materials.size()));
+                        std::pair<std::string, std::size_t>(material.name, materials.size()));
                 materials.push_back(material);
 
                 return err.str();
@@ -662,7 +662,7 @@ namespace tinyobj
 
         std::string MaterialFileReader::operator()(const std::string &matId,
                                                    std::vector<material_t> &materials,
-                                                   std::map<std::string, int> &matMap)
+                                                   std::map<std::string, std::size_t> &matMap)
         {
                 std::string filepath;
 
@@ -718,7 +718,7 @@ namespace tinyobj
                 std::string name;
 
                 // material
-                std::map<std::string, int> material_map;
+                std::map<std::string, std::size_t> material_map;
                 std::map<vertex_index, unsigned int> vertexCache;
                 int material = -1;
 

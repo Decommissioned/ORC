@@ -5,6 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 
+#include <iostream>
+
 namespace ORC_NAMESPACE
 {
         const static glm::vec3 i = {1.0f, 0.0f, 0.0f};

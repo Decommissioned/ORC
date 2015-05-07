@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <iostream>
+
 namespace ORC_NAMESPACE
 {
 
@@ -27,7 +29,7 @@ namespace ORC_NAMESPACE
                 _shader.SetUniform("model_matrix", transform.GetModelMatrix());
                 _shader.SetUniform("normal_matrix", transform.GetNormalMatrix());
 
-                glDrawElements(GL_TRIANGLES, _mesh.Count(), GL_UNSIGNED_INT, 0);
+                glDrawElements(GL_TRIANGLES, (GLsizei) _mesh.Count(), GL_UNSIGNED_INT, 0);
                 
                 transform.LoadIdentity();
         }

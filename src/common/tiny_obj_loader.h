@@ -60,7 +60,7 @@ namespace tinyobj
 
                 virtual std::string operator()(const std::string &matId,
                                                std::vector<material_t> &materials,
-                                               std::map<std::string, int> &matMap) = 0;
+                                               std::map<std::string, std::size_t> &matMap) = 0;
         };
 
         class MaterialFileReader : public MaterialReader
@@ -73,7 +73,7 @@ namespace tinyobj
                 {}
                 virtual std::string operator()(const std::string &matId,
                                                std::vector<material_t> &materials,
-                                               std::map<std::string, int> &matMap);
+                                               std::map<std::string, std::size_t> &matMap);
 
         private:
                 std::string m_mtlBasePath;

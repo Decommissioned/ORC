@@ -15,11 +15,24 @@ namespace ORC_NAMESPACE
         {
                 uint32 shaderID;
                 GLint success;
-                const char* src = source.c_str();
-                int32 length = static_cast<int32>(source.length());
+                GLint length[2];
+                const char* src[2];
+
+                // Define specific preprocessor macros depending on the type of shader being compiled
+                if (type == GL_VERTEX_SHADER)
+                        src[0] = "#define _VERTEX_SHADER_\n";
+                else if (type == GL_FRAGMENT_SHADER)
+                        src[0] = "#define _FRAGMENT_SHADER_\n";
+                else
+                        src[0] = "";
+
+                src[1] = source.c_str();
+
+                length[0] = (GLint) strlen(src[0]);
+                length[1] = (GLint) source.length();
 
                 shaderID = glCreateShader(type);
-                glShaderSource(shaderID, 1, &src, &length);
+                glShaderSource(shaderID, 2, src, length);
                 glCompileShader(shaderID);
                 glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
 
