@@ -35,7 +35,9 @@ namespace ORC_NAMESPACE
                 IO_FILE_NOT_FOUND,
                 IO_FILE_OPEN,
                 IO_LOAD_PNG,
-                IO_LOAD_OBJ
+                IO_LOAD_OBJ,
+
+                RESOURCE_NOT_FOUND
         };
 
 };
