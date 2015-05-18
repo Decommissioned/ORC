@@ -13,6 +13,7 @@ namespace ORC_NAMESPACE
                 vector<float> positions;
                 vector<float> normals;
                 vector<float> uvs;
+                string nameID;
         };
 
         // Raw image data
@@ -20,6 +21,7 @@ namespace ORC_NAMESPACE
         {
                 vector<uint8> data;
                 uint32 width, height;
+                string nameID;
         };
 
 };
