@@ -31,9 +31,9 @@ namespace ORC_NAMESPACE
                 static void LinkProgram(uint32 programID);
                 static void DeleteShader(uint32 programID, uint32 shaderID);
 
-                uint32 _programID;
+                uint32 m_programID;
 
-                THREAD_LOCAL_STORAGE static uint32 _bound_programID;
+                THREAD_LOCAL_STORAGE static uint32 m_bound_programID;
 
         };
 

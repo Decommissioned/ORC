@@ -15,25 +15,28 @@ namespace ORC_NAMESPACE
 
         public:
 
-                UniformBuffer(std::initializer_list<uint32> programIDs, const string& name);
+                UniformBuffer();
+
                 ~UniformBuffer();
+
+                void AddPrograms(std::initializer_list<uint32> programIDs, const string& name);
 
                 template<typename block>
                 void Update(const block& data)
                 {
-                        _Update(&data, sizeof(block));
+                        update(&data, sizeof(block));
                 }
 
 
         private:
 
-                void _Update(const void* data, uint32 length);
+                void update(const void* data, uint32 length);
 
-                uint32 _bufferID;
-                uint8 _binding_point;
+                uint32 m_bufferID;
+                uint8 m_binding_point;
 
-                static THREAD_LOCAL_STORAGE uint8 _next_binding_point;
-                static THREAD_LOCAL_STORAGE uint32 _max_binding_points;
+                static THREAD_LOCAL_STORAGE uint8 m_next_binding_point;
+                static THREAD_LOCAL_STORAGE uint32 m_max_binding_points;
         };
 
 };

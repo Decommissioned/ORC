@@ -3,7 +3,7 @@
 #include "vertex_attributes.h"
 #include "resource_loader.h"
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 
 namespace ORC_NAMESPACE
 {
@@ -16,18 +16,18 @@ namespace ORC_NAMESPACE
         {
                 // Gets the list of uniform variable's names in the current program
                 int32 count;
-                glGetProgramiv(_programID, GL_ACTIVE_UNIFORMS, &count);
+                glGetProgramiv(m_programID, GL_ACTIVE_UNIFORMS, &count);
                 attributes.reserve(count);
                 char buffer[255]; int32 length; int32 size; uint32 type;
                 for (int32 i = 0; i < count; i++)
                 {
                         // Uniform blocks are also included in the above call, fortunately if we query for their location we get -1
                         // Since uniform blocks are stored in a different location, using glUniform* to set them is undefined behavior
-                        glGetActiveUniform(_programID, i, 255, &length, &size, &type, buffer);
-                        int32 location = glGetUniformLocation(_programID, buffer);
+                        glGetActiveUniform(m_programID, i, 255, &length, &size, &type, buffer);
+                        int32 location = glGetUniformLocation(m_programID, buffer);
 
                         if (location != -1)
-                                attributes.emplace_back(_uniform{ buffer, location, type });
+                                attributes.emplace_back(uniform{ buffer, location, type });
                 }
         };
 
@@ -40,7 +40,7 @@ namespace ORC_NAMESPACE
                 {
                         if (attribute.name == name)
                         {
-                                if (BoundID() != _programID) Bind();
+                                if (BoundID() != m_programID) Bind();
 
                                 switch (attribute.type) // TODO: Think harder about a better way of handling this mess
                                 {

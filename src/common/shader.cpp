@@ -106,42 +106,42 @@ namespace ORC_NAMESPACE
                 uint32 vertexID = CompileShader(vertex_source, GL_VERTEX_SHADER);
                 uint32 fragmentID = CompileShader(fragment_source, GL_FRAGMENT_SHADER);
 
-                _programID = CreateProgram(vertexID, fragmentID);
+                m_programID = CreateProgram(vertexID, fragmentID);
 
                 for (auto& attribute : attributes)
                         BindAttribute(attribute.first, attribute.second.c_str());
 
-                LinkProgram(_programID);
-                DeleteShader(_programID, vertexID);
-                DeleteShader(_programID, fragmentID);
+                LinkProgram(m_programID);
+                DeleteShader(m_programID, vertexID);
+                DeleteShader(m_programID, fragmentID);
         }
 
         Shader::~Shader()
         {
-                glDeleteProgram(_programID);
+                glDeleteProgram(m_programID);
         }
 
         void Shader::Bind() const
         {
-                glUseProgram(_programID);
-                _bound_programID = _programID;
+                glUseProgram(m_programID);
+                m_bound_programID = m_programID;
         }
 
         void Shader::BindAttribute(uint8 slot, const char* attribute)
         {
-                glBindAttribLocation(_programID, slot, attribute);
+                glBindAttribLocation(m_programID, slot, attribute);
         }
 
         uint32 Shader::ID() const
         {
-                return _programID;
+                return m_programID;
         }
 
         uint32 Shader::BoundID()
         {
-                return _bound_programID;
+                return m_bound_programID;
         }
 
-        THREAD_LOCAL_STORAGE uint32 Shader::_bound_programID = 0;
+        THREAD_LOCAL_STORAGE uint32 Shader::m_bound_programID = 0;
 
 };

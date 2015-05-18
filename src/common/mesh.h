@@ -25,17 +25,19 @@ namespace ORC_NAMESPACE
                 uint32 ID() const;
                 static uint32 BoundID();
 
+                const string& NameID() const;
+
         protected:
 
-                THREAD_LOCAL_STORAGE static uint32 _bound_VAO;
+                THREAD_LOCAL_STORAGE static uint32 m_bound_VAO;
 
-                const static uint8 _ATTRIBUTE_COUNT = 4;
+                const static uint8 m_ATTRIBUTE_COUNT = 4;
 
-                uint32 _VAO;
-                uint32 _VBO[_ATTRIBUTE_COUNT];
-                size_t _count;
+                uint32 m_VAO;
+                uint32 m_VBO[m_ATTRIBUTE_COUNT];
+                size_t m_count;
 
-
+                string m_nameID;
         };
 
 };

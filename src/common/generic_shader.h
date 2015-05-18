@@ -24,14 +24,14 @@ namespace ORC_NAMESPACE
 
         protected:
 
-                struct _uniform
+                struct uniform
                 {
                         string name;
                         int32 location;
                         uint32 type;
                 };
 
-                vector<_uniform> attributes;
+                vector<uniform> attributes;
 
         };
 

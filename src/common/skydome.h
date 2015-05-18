@@ -23,9 +23,9 @@ namespace ORC_NAMESPACE
 
                 void BindIfNeeded() const;
 
-                const Texture2D& _texture;
-                SkydomeShader _dome_shader;
-                Mesh _dome;
+                const Texture2D& m_texture;
+                SkydomeShader m_dome_shader;
+                Mesh m_dome;
 
         };
 

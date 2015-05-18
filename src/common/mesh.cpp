@@ -10,19 +10,20 @@ namespace ORC_NAMESPACE
 
         Mesh::Mesh(const MeshData& data)
         {
-                _count = data.indices.size();
+                m_count = data.indices.size();
+                m_nameID = data.nameID;
 
-                glGenVertexArrays(1, &_VAO);
-                glGenBuffers(_ATTRIBUTE_COUNT, _VBO);
+                glGenVertexArrays(1, &m_VAO);
+                glGenBuffers(m_ATTRIBUTE_COUNT, m_VBO);
 
                 Bind();
 
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _VBO[0]);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_VBO[0]);
                 glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * data.indices.size(), &data.indices.front(), GL_STATIC_DRAW);
 
                 if (data.positions.size() != 0)
                 {
-                        glBindBuffer(GL_ARRAY_BUFFER, _VBO[VERTEX_POSITION + 1]);
+                        glBindBuffer(GL_ARRAY_BUFFER, m_VBO[VERTEX_POSITION + 1]);
                         glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.positions.size(), &data.positions.front(), GL_STATIC_DRAW);
                         glVertexAttribPointer(VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
                         glEnableVertexAttribArray(orc::VERTEX_POSITION);
@@ -31,7 +32,7 @@ namespace ORC_NAMESPACE
 
                 if (data.uvs.size() != 0) // Positions and normals are required, texture coordinates are optional for now
                 {
-                        glBindBuffer(GL_ARRAY_BUFFER, _VBO[VERTEX_UV + 1]);
+                        glBindBuffer(GL_ARRAY_BUFFER, m_VBO[VERTEX_UV + 1]);
                         glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.uvs.size(), &data.uvs.front(), GL_STATIC_DRAW);
                         glVertexAttribPointer(VERTEX_UV, 2, GL_FLOAT, GL_FALSE, 0, 0);
                         glEnableVertexAttribArray(orc::VERTEX_UV);
@@ -40,7 +41,7 @@ namespace ORC_NAMESPACE
 
                 if (data.normals.size() != 0)
                 {
-                        glBindBuffer(GL_ARRAY_BUFFER, _VBO[VERTEX_NORMAL + 1]);
+                        glBindBuffer(GL_ARRAY_BUFFER, m_VBO[VERTEX_NORMAL + 1]);
                         glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.normals.size(), &data.normals.front(), GL_STATIC_DRAW);
                         glVertexAttribPointer(VERTEX_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
                         glEnableVertexAttribArray(orc::VERTEX_NORMAL);
@@ -50,36 +51,41 @@ namespace ORC_NAMESPACE
 
         Mesh::~Mesh()
         {
-                glDeleteBuffers(_ATTRIBUTE_COUNT, _VBO);
-                glDeleteVertexArrays(1, &_VAO);
+                glDeleteBuffers(m_ATTRIBUTE_COUNT, m_VBO);
+                glDeleteVertexArrays(1, &m_VAO);
         }
 
         void Mesh::Bind() const
         {
-                glBindVertexArray(_VAO);
-                _bound_VAO = _VAO;
+                glBindVertexArray(m_VAO);
+                m_bound_VAO = m_VAO;
         }
 
         void Mesh::Draw() const
         {
-                glDrawElements(GL_TRIANGLES, (GLsizei) _count, GL_UNSIGNED_INT, 0);
+                glDrawElements(GL_TRIANGLES, (GLsizei) m_count, GL_UNSIGNED_INT, 0);
         }
 
         size_t Mesh::Count() const
         {
-                return _count;
+                return m_count;
         }
 
         uint32 Mesh::ID() const
         {
-                return _VAO;
+                return m_VAO;
         }
 
         uint32 Mesh::BoundID()
         {
-                return _bound_VAO;
+                return m_bound_VAO;
         }
 
-        THREAD_LOCAL_STORAGE uint32 Mesh::_bound_VAO = 0;
+        const string& Mesh::NameID() const
+        {
+                return m_nameID;
+        }
+
+        THREAD_LOCAL_STORAGE uint32 Mesh::m_bound_VAO = 0;
 
 };
