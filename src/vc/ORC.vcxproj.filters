@@ -105,6 +105,15 @@
     <ClCompile Include="..\common\skydome.cpp">
       <Filter>Source Files\common\mesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\renderer.cpp">
+      <Filter>Source Files\common\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\map.cpp">
+      <Filter>Source Files\common\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\map_shader.cpp">
+      <Filter>Source Files\common\shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\shader.h">
@@ -161,6 +170,15 @@
     <ClInclude Include="..\common\skydome.h">
       <Filter>Header Files\common\mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\common\renderer.h">
+      <Filter>Header Files\common\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\map.h">
+      <Filter>Header Files\common\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\map_shader.h">
+      <Filter>Header Files\common\shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shader\vertex.shader">
@@ -170,6 +188,9 @@
       <Filter>Resource Files\shader</Filter>
     </None>
     <None Include="..\shader\master.shader">
+      <Filter>Resource Files\shader</Filter>
+    </None>
+    <None Include="..\shader\skydome.shader">
       <Filter>Resource Files\shader</Filter>
     </None>
   </ItemGroup>

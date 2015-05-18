@@ -85,6 +85,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -102,6 +103,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -121,6 +123,8 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -142,6 +146,8 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -157,8 +163,11 @@
     <ClCompile Include="..\common\DisplayManager.cpp" />
     <ClCompile Include="..\common\entity.cpp" />
     <ClCompile Include="..\common\generic_shader.cpp" />
+    <ClCompile Include="..\common\map.cpp" />
+    <ClCompile Include="..\common\map_shader.cpp" />
     <ClCompile Include="..\common\mesh.cpp" />
     <ClCompile Include="..\common\png.cpp" />
+    <ClCompile Include="..\common\renderer.cpp" />
     <ClCompile Include="..\common\resource_loader.cpp" />
     <ClCompile Include="..\common\shader.cpp" />
     <ClCompile Include="..\common\skydome.cpp" />
@@ -177,7 +186,10 @@
     <ClInclude Include="..\common\error_codes.h" />
     <ClInclude Include="..\common\config.h" />
     <ClInclude Include="..\common\generic_shader.h" />
+    <ClInclude Include="..\common\map.h" />
+    <ClInclude Include="..\common\map_shader.h" />
     <ClInclude Include="..\common\mesh.h" />
+    <ClInclude Include="..\common\renderer.h" />
     <ClInclude Include="..\common\resource_loader.h" />
     <ClInclude Include="..\common\resource_types.h" />
     <ClInclude Include="..\common\scope_guard.h" />
@@ -194,6 +206,7 @@
   <ItemGroup>
     <None Include="..\shader\fragment.shader" />
     <None Include="..\shader\master.shader" />
+    <None Include="..\shader\skydome.shader" />
     <None Include="..\shader\vertex.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
