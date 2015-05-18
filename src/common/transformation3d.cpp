@@ -20,34 +20,34 @@ namespace ORC_NAMESPACE
 
         void Transformation3D::Translate(float dx, float dy, float dz)
         {
-                _model = glm::translate(_model, glm::vec3(dx, dy, dz));
+                m_model = glm::translate(m_model, glm::vec3(dx, dy, dz));
         }
 
         void Transformation3D::Rotate(float rx, float ry, float rz)
         {
                 // OPTIMIZE: use quaternions in the future if possible
-                _model = glm::rotate(glm::rotate(glm::rotate(_model, rx, i), ry, j), rz, k);
-                _normal = glm::rotate(glm::rotate(glm::rotate(_normal, rx, i), ry, j), rz, k);
+                m_model = glm::rotate(glm::rotate(glm::rotate(m_model, rx, i), ry, j), rz, k);
+                m_normal = glm::rotate(glm::rotate(glm::rotate(m_normal, rx, i), ry, j), rz, k);
         }
 
         void Transformation3D::LoadIdentity()
         {
-                _model = _normal = glm::mat4();
+                m_model = m_normal = glm::mat4();
         }
 
         void Transformation3D::Scale(float sx, float sy, float sz)
         {
-                _model = glm::scale(_model, glm::vec3(sx, sy, sz));
+                m_model = glm::scale(m_model, glm::vec3(sx, sy, sz));
         }
 
         const float* Transformation3D::GetModelMatrix() const
         {
-                return &_model[0][0];
+                return &m_model[0][0];
         }
 
         const float* Transformation3D::GetNormalMatrix() const
         {
-                return &_normal[0][0];
+                return &m_normal[0][0];
         }
 
 };

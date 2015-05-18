@@ -29,8 +29,8 @@ namespace ORC_NAMESPACE
                 const float* GetNormalMatrix() const;
 
         private:
-                glm::mat4 _model;
-                glm::mat4 _normal;
+                glm::mat4 m_model;
+                glm::mat4 m_normal;
         };
 };
 
