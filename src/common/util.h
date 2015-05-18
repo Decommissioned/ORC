@@ -17,6 +17,9 @@ namespace ORC_NAMESPACE
                 string ReadFileText(const string& path);
                 vector<uint8> ReadFileBinary(const string& path);
 
+                vector<string> ListDirectoryFiles(const string& folder);
+                vector<string> ListDirectoryFiles(const string& folder, const string& extension);
+
         };
 };
 

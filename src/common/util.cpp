@@ -6,6 +6,8 @@
 #include <sys/stat.h>
 #include "error_codes.h"
 
+#include <boost/filesystem.hpp>
+
 namespace ORC_NAMESPACE
 {
         namespace util
@@ -43,5 +45,45 @@ namespace ORC_NAMESPACE
 
                         return data;
                 }
+
+                vector<string> ListDirectoryFiles(const string& folder)
+                {
+                        vector<string> files;
+
+                        boost::filesystem::path path = folder;
+                        boost::filesystem::directory_iterator end;
+
+                        for (boost::filesystem::directory_iterator itr(path); itr != end; ++itr)
+                        {
+                                if (boost::filesystem::is_regular_file(itr->path()))
+                                        files.emplace_back(itr->path().string());
+                        }
+
+                        return files;
+                }
+
+                vector<string> ListDirectoryFiles(const string& folder, const string& extension)
+                {
+                        vector<string> files;
+
+                        boost::filesystem::path path = folder;
+                        boost::filesystem::directory_iterator end;
+
+                        for (boost::filesystem::directory_iterator itr(path); itr != end; ++itr)
+                        {
+                                if (boost::filesystem::is_regular_file(itr->path()))
+                                {
+                                        string file = itr->path().string();
+
+                                        if (file.substr(file.find_last_of('.')) == extension)
+                                                files.emplace_back(file);
+                                }
+                        }
+
+                        return files;
+                }
+
+                
+
         };
 };
