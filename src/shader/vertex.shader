@@ -31,5 +31,5 @@ void main()
         output.position = transformed_postion.xyz;
         output.uv = uv;
         output.normal = mat3(normal_matrix) * normal;
-        output.distance = clip_coordinate.w;
+        output.distance = clip_coordinate.w / render_distance;
 }

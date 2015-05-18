@@ -8,6 +8,7 @@ in vec2 uv;
 out data
 {
         vec2 uv;
+        float y;
         
 } output;
 
@@ -34,6 +35,7 @@ void main()
         gl_Position = cs.xyzw;
         
         output.uv = uv;
+        output.y = cs.y / cs.w;
 }
 
 #endif
@@ -45,6 +47,7 @@ uniform sampler2D sampler;
 in data
 {
         vec2 uv;
+        float y;
 	
 } interpolated;
 
@@ -52,7 +55,9 @@ out vec4 fragment;
 
 void main()
 {
-        fragment = texture(sampler, interpolated.uv);
+        float k = smoothstep(0.0, 0.01, (interpolated.y + 1.0) * 0.5);
+        vec4 tex = texture(sampler, interpolated.uv);
+        fragment = mix(sky_color, tex, k);
 }
 
 #endif

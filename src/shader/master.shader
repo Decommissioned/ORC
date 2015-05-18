@@ -8,6 +8,7 @@ uniform global
         vec3 eye;     // Position of the camera
         vec3 ambient; // Global ambient light
         vec3 attenuation_factor;
+        vec4 sky_color;
         float light_damping;
         float render_distance;
         float timestamp;

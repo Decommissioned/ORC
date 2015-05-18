@@ -39,6 +39,7 @@ void main()
         
         vec3 phong = ambient_light + diffuse_light + specular_light;
         
-        result = vec4(phong, 1.0) * texture(sampler, interpolated.uv);
+        vec4 tex = vec4(phong, 1.0) * texture(sampler, interpolated.uv);
+        result = mix(tex, sky_color, interpolated.distance);
         
 }
