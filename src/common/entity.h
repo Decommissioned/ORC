@@ -25,14 +25,14 @@ namespace ORC_NAMESPACE
 
                 Transformation3D transform;
 
-                void Render();
+                void Render() const;
 
         protected:
 
-                const Mesh& _mesh;
-                const Texture2D& _texture;
+                const Mesh& m_mesh;
+                const Texture2D& m_texture;
 
-                GenericShader& _shader;
+                GenericShader& m_shader;
 
         };
 

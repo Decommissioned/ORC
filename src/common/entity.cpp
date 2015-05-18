@@ -1,37 +1,31 @@
 #include "entity.h"
 
-#include <GL/glew.h>
-
-#include <iostream>
-
 namespace ORC_NAMESPACE
 {
 
         Entity::Entity(GenericShader& shader, const Mesh& mesh, const Texture2D& texture)
-                : _mesh(mesh), _shader(shader), _texture(texture)
+                : m_mesh(mesh), m_shader(shader), m_texture(texture)
         {}
 
         Entity::~Entity()
         {}
 
-        void Entity::Render()
+        void Entity::Render() const
         {
 
-                if (Shader::BoundID() != _shader.ID())
-                        _shader.Bind();
+                if (Shader::BoundID() != m_shader.ID())
+                        m_shader.Bind();
 
-                if (Mesh::BoundID() != _mesh.ID())
-                        _mesh.Bind();
+                if (Mesh::BoundID() != m_mesh.ID())
+                        m_mesh.Bind();
 
-                if (Texture2D::BoundID() != _texture.ID())
-                        _texture.Bind();
+                if (Texture2D::BoundID() != m_texture.ID())
+                        m_texture.Bind();
 
-                _shader.SetUniform("model_matrix", transform.GetModelMatrix());
-                _shader.SetUniform("normal_matrix", transform.GetNormalMatrix());
+                m_shader.SetUniform("model_matrix", transform.GetModelMatrix());
+                m_shader.SetUniform("normal_matrix", transform.GetNormalMatrix());
 
-                glDrawElements(GL_TRIANGLES, (GLsizei) _mesh.Count(), GL_UNSIGNED_INT, 0);
-                
-                transform.LoadIdentity();
+                m_mesh.Draw();
         }
 
 };
