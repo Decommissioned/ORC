@@ -3,6 +3,8 @@
 
 #include "config.h"
 
+#include "resource_types.h"
+
 namespace ORC_NAMESPACE
 {
 
@@ -36,10 +38,10 @@ namespace ORC_NAMESPACE
         {
         public:
 
-                explicit Texture2D(const string& path, TextureWrapping wrapping, TextureFiltering filtering, TextureChannel channel);
-                explicit Texture2D(const string& path, TextureFiltering filtering);
-                explicit Texture2D(const string& path, TextureWrapping wrapping);
-                explicit Texture2D(const string& path);
+                explicit Texture2D(const ImageData& img, TextureWrapping wrapping, TextureFiltering filtering, TextureChannel channel);
+                explicit Texture2D(const ImageData& img, TextureFiltering filtering);
+                explicit Texture2D(const ImageData& img, TextureWrapping wrapping);
+                explicit Texture2D(const ImageData& img);
 
                 Texture2D(Texture2D&) = delete;
                 ~Texture2D();
@@ -48,13 +50,17 @@ namespace ORC_NAMESPACE
                 uint32 ID() const;
                 static uint32 BoundID();
 
+                const string& NameID() const;
+
         private:
 
-                uint32 _wrapping_mode;
-                uint32 _filtering_mode;
-                uint32 _textureID;
+                uint32 m_wrapping_mode;
+                uint32 m_filtering_mode;
+                uint32 m_textureID;
 
-                THREAD_LOCAL_STORAGE static uint32 _bound_textureID;
+                THREAD_LOCAL_STORAGE static uint32 m_bound_textureID;
+
+                string m_nameID;
         };
 
 };

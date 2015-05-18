@@ -6,12 +6,12 @@
 namespace ORC_NAMESPACE
 {
 
-        Texture2D::Texture2D(const string& path, TextureWrapping wrapping, TextureFiltering filtering, TextureChannel channel)
+        Texture2D::Texture2D(const ImageData& img, TextureWrapping wrapping, TextureFiltering filtering, TextureChannel channel)
         {
                 // TODO: fix mip map generation 
-                ImageData img = ResourceLoader::LoadPNG(path);
+                m_nameID = img.nameID;
 
-                glGenTextures(1, &_textureID);
+                glGenTextures(1, &m_textureID);
 
                 Bind();
 
@@ -63,39 +63,44 @@ namespace ORC_NAMESPACE
                 }
         }
 
-        Texture2D::Texture2D(const string& path, TextureFiltering filtering)
-                : Texture2D(path, TextureWrapping::REPEAT, TextureFiltering::LINEAR, TextureChannel::RGBA)
+        Texture2D::Texture2D(const ImageData& img, TextureFiltering filtering)
+                : Texture2D(img, TextureWrapping::REPEAT, TextureFiltering::LINEAR, TextureChannel::RGBA)
         {}
 
-        Texture2D::Texture2D(const string& path, TextureWrapping wrapping)
-                : Texture2D(path, wrapping, TextureFiltering::LINEAR, TextureChannel::RGBA)
+        Texture2D::Texture2D(const ImageData& img, TextureWrapping wrapping)
+                : Texture2D(img, wrapping, TextureFiltering::LINEAR, TextureChannel::RGBA)
         {}
 
-        Texture2D::Texture2D(const string& path)
-                : Texture2D(path, TextureWrapping::REPEAT, TextureFiltering::LINEAR, TextureChannel::RGBA)
+        Texture2D::Texture2D(const ImageData& img)
+                : Texture2D(img, TextureWrapping::REPEAT, TextureFiltering::LINEAR, TextureChannel::RGBA)
         {}
 
         Texture2D::~Texture2D()
         {
-                glDeleteTextures(1, &_textureID);
+                glDeleteTextures(1, &m_textureID);
         }
 
         void Texture2D::Bind() const
         {
-                glBindTexture(GL_TEXTURE_2D, _textureID);
-                _bound_textureID = _textureID;
+                glBindTexture(GL_TEXTURE_2D, m_textureID);
+                m_bound_textureID = m_textureID;
         }
 
         uint32 Texture2D::ID() const
         {
-                return _textureID;
+                return m_textureID;
         }
 
         uint32 Texture2D::BoundID()
         {
-                return _bound_textureID;
+                return m_bound_textureID;
         }
 
-        THREAD_LOCAL_STORAGE uint32 Texture2D::_bound_textureID = 0;
+        const string& Texture2D::NameID() const
+        {
+                return m_nameID;
+        }
+
+        THREAD_LOCAL_STORAGE uint32 Texture2D::m_bound_textureID = 0;
 
 };
