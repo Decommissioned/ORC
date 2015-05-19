@@ -14,36 +14,35 @@ namespace ORC_NAMESPACE
 
         Renderer::Renderer() :
                 m_meshes(DiscoverAndLoadMeshes()), m_textures(DiscoverAndLoadTextures()),
-                gs(), ubo(), map(2402534U, 800, 800, 0.25f, GetTexture("grass")), skydome(GetTexture("dome"))
+                gs(), ubo(), map(2402534U, 800, 800, 2.5f, GetTexture("grass")), skydome(GetTexture("dome"))
         {
-                //skydome = new Skydome(GetTexture("dome"));
                 ubo.AddPrograms({gs.ID(), skydome.ShaderID(), map.ShaderID()}, "global");
 
-                global.sky_color = {0.6f, 0.6f, 0.6f, 1.0f};
-                global.light_damping = 10.0f;
-                global.attenuation_factor = {1.0f, 0.0f, 0.0f};
-                global.ambient = {0.2f, 0.2f, 0.2f};
-                global.eye = {0.0f, 0.0f, -1.0f};
-                global.view =  glm::lookAt(global.eye, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-                global.projection = glm::perspectiveFov(45.0f, 1280.0f, 800.0f, 0.01f, 1000.0f);
-                global.render_distance = 1000.0f;
+                m_global.sky_color = {0.6f, 0.6f, 0.6f, 1.0f};
+                m_global.light_damping = 10.0f;
+                m_global.attenuation_factor = {1.0f, 0.0f, 0.0f};
+                m_global.ambient = {0.2f, 0.2f, 0.2f};
+                m_global.eye = {0.0f, 0.0f, -1.0f};
+                m_global.view =  glm::lookAt(m_global.eye, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                m_global.projection = glm::perspectiveFov(45.0f, 1280.0f, 800.0f, 0.01f, 1000.0f);
+                m_global.render_distance = 1000.0f;
 
                 glm::vec3 Ka = {0.9f, 0.9f, 0.9f};
                 glm::vec3 Kd = {0.5f, 0.5f, 0.5f};
                 glm::vec3 Ks = {0.8f, 0.8f, 0.8f};
-                glm::vec3 sun = glm::normalize(glm::vec3(1.0f, 1.0f, 0.0f));
+                glm::vec3 sun = glm::normalize(glm::vec3(0.0f, 1.0f, 1.0f));
 
                 gs.SetUniform("Ka", &Ka);
                 gs.SetUniform("Kd", &Kd);
                 gs.SetUniform("Ks", &Ks);
                 gs.SetUniform("sun", &sun);
+
+                map.SetSun(sun);
                 
         }
 
         Renderer::~Renderer()
-        {
-                //delete skydome;
-        }
+        {}
 
         Entity& Renderer::AddEntity(const string& meshName, const string& textureName)
         {
@@ -55,8 +54,8 @@ namespace ORC_NAMESPACE
 
         void Renderer::Update(float dt)
         {
-                global.timestamp += dt;
-                ubo.Update(global);
+                m_global.timestamp += dt;
+                ubo.Update(m_global);
 
                 for (auto& entity : m_entities)
                         entity.Render();
@@ -114,6 +113,17 @@ namespace ORC_NAMESPACE
                         meshes.emplace_back(md);
                 }
                 return meshes;
+        }
+
+        void Renderer::View(const glm::mat4& view)
+        {
+                m_global.view = view;
+                m_global.eye = -glm::transpose(glm::mat3(view)) * glm::vec3(view[3]);
+        }
+
+        void Renderer::Projection(const glm::mat4& projection)
+        {
+                m_global.projection = projection;
         }
 
 };

@@ -20,7 +20,7 @@ namespace ORC_NAMESPACE
         class Renderer
         {
 
-                struct Transformation
+                struct GlobalUniform
                 {
                         glm::mat4 projection;
                         glm::mat4 view;
@@ -33,7 +33,7 @@ namespace ORC_NAMESPACE
                         float timestamp;
                 };
 
-                Transformation global;
+                GlobalUniform m_global;
 
                 std::deque<Mesh> m_meshes;
                 std::deque<Texture2D> m_textures;
@@ -56,6 +56,9 @@ namespace ORC_NAMESPACE
                 ~Renderer();
 
                 Entity& AddEntity(const string& meshName, const string& textureName);
+
+                void View(const glm::mat4& view);
+                void Projection(const glm::mat4& projection);
 
                 void Update(float dt);
 
