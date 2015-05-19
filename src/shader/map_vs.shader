@@ -8,6 +8,7 @@ out data
         vec2 uv;
         // vec3 normal;
         float distance;
+        float height;
 
 } output;
 
@@ -17,8 +18,9 @@ void main()
         vec4 clip_coordinate = projection * view * vec4(position, 1.0);
         gl_Position = clip_coordinate;
         
-        output.uv = position.xz / 30.0;
+        output.uv = position.xz / 15.0;
         // output.normal = normal;
         output.distance = clip_coordinate.w / render_distance;
+        output.height = position.y;
 
 }
