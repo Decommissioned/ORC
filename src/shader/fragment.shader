@@ -27,7 +27,7 @@ void main()
 {
        
         // Directional light source (sun)
-        
+               
         vec3  ambient_light = Ka * ambient;
         
         float diffuse_factor = max(dot(sun, interpolated.normal), 0.0);
