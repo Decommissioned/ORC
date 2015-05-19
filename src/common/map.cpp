@@ -13,7 +13,7 @@ namespace ORC_NAMESPACE
         MeshData& Map::init_mesh_data_aux(uint64 seed, uint32 width, uint32 height, float spacing)
         {
                 std::mt19937 mt(seed);
-                std::uniform_real_distribution<float> dist(-3.1f, -3.0f);
+                std::uniform_real_distribution<float> dist(-3.5f, -3.0f);
 
                 m_data.positions.reserve(3 * width * height);
                 m_data.indices.reserve(6 * (width - 1) * (height - 1));
@@ -68,6 +68,13 @@ namespace ORC_NAMESPACE
         uint32 Map::ShaderID() const
         {
                 return m_shader.ID();
+        }
+
+        // TODO: move shader out of class
+        void Map::SetSun(const glm::vec3& direction)
+        {
+                m_shader.Bind();
+                m_shader.SetSun(direction);
         }
 
 };

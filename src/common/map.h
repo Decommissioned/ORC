@@ -22,6 +22,8 @@ namespace ORC_NAMESPACE
 
         public:
 
+                void SetSun(const glm::vec3& direction);
+
                 void Render() const;
 
                 uint32 ShaderID() const;
