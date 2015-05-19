@@ -114,6 +114,9 @@
     <ClCompile Include="..\common\map_shader.cpp">
       <Filter>Source Files\common\shader</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\camera.cpp">
+      <Filter>Source Files\common\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\shader.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="..\common\map_shader.h">
       <Filter>Header Files\common\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\camera.h">
+      <Filter>Header Files\common\misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

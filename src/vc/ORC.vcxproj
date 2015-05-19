@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\common\camera.cpp" />
     <ClCompile Include="..\common\DisplayManager.cpp" />
     <ClCompile Include="..\common\entity.cpp" />
     <ClCompile Include="..\common\generic_shader.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="windows_interfacing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\common\camera.h" />
     <ClInclude Include="..\common\DisplayManager.h" />
     <ClInclude Include="..\common\entity.h" />
     <ClInclude Include="..\common\error_codes.h" />
