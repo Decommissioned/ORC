@@ -121,6 +121,9 @@ namespace ORC_NAMESPACE
                         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
                         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+                        // Request full control of inputs
+                        SDL_SetRelativeMouseMode(SDL_TRUE);
+
                 }
 
                 SDL_Window* window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
