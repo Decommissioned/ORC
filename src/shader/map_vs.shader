@@ -1,26 +1,17 @@
 #pragma include("master.shader")
 
-in vec3 position;
-in vec3 normal;
+in vec3 in_position;
+in vec3 in_normal;
 
-out data
-{
-        vec2 uv;
-        // vec3 normal;
-        float distance;
-        float height;
-
-} output;
+out vec2 v_uv;
+out float v_dist;
+out float v_height;
 
 void main()
 {
-
-        vec4 clip_coordinate = projection * view * vec4(position, 1.0);
+        vec4 clip_coordinate = projection * view * vec4(in_position, 1.0);
         gl_Position = clip_coordinate;
-        
-        output.uv = position.xz / 15.0;
-        // output.normal = normal;
-        output.distance = clip_coordinate.w / render_distance;
-        output.height = position.y;
-
+        v_uv = in_position.xz / 15.0;
+        v_dist = clip_coordinate.w / render_distance;
+        v_height = in_position.y;
 }
