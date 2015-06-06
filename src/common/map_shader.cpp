@@ -12,7 +12,7 @@ namespace ORC_NAMESPACE
                 Shader(
                 ResourceLoader::LoadShader("map_vs.shader"),
                 ResourceLoader::LoadShader("map_fs.shader"),
-                {{VERTEX_POSITION, "position"}})
+                {{VERTEX_POSITION, "in_position"}, {VERTEX_NORMAL, "in_normal"}})
         {
                 m_loc_sun = glGetUniformLocation(m_programID, "sun");
         }

@@ -22,7 +22,7 @@ namespace ORC_NAMESPACE
 
         protected:
 
-                explicit Shader(const string& vertex_source, const string& fragment_source, std::initializer_list<std::pair<uint8, string>> = {});
+                explicit Shader(const string& vertex_source, const string& fragment_source, std::initializer_list<std::pair<uint8, string>>);
 
                 void BindAttribute(uint8 slot, const char* attribute);
 

@@ -103,9 +103,9 @@ namespace ORC_NAMESPACE
 
         Shader::Shader(const string& vertex_source, const string& fragment_source, std::initializer_list<std::pair<uint8, string>> attributes)
         {
+
                 uint32 vertexID = CompileShader(vertex_source, GL_VERTEX_SHADER);
                 uint32 fragmentID = CompileShader(fragment_source, GL_FRAGMENT_SHADER);
-
                 m_programID = CreateProgram(vertexID, fragmentID);
 
                 for (auto& attribute : attributes)

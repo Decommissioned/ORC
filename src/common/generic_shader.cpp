@@ -12,7 +12,7 @@ namespace ORC_NAMESPACE
                 : Shader(
                 ResourceLoader::LoadShader("vertex.shader"),
                 ResourceLoader::LoadShader("fragment.shader"),
-                {{VERTEX_POSITION, "position"}, {VERTEX_UV, "uv"}, {VERTEX_NORMAL, "normal"}})
+                {{VERTEX_POSITION, "in_position"}, {VERTEX_UV, "in_uv"}, {VERTEX_NORMAL, "in_normal"}})
         {
                 // Gets the list of uniform variable's names in the current program
                 int32 count;
