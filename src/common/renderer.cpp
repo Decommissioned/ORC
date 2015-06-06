@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+#include <GL/glew.h>
+
 namespace ORC_NAMESPACE
 {
 
@@ -57,12 +59,16 @@ namespace ORC_NAMESPACE
                 m_global.timestamp += dt;
                 ubo.Update(m_global);
 
+                glDisable(GL_CULL_FACE);
+                glDisable(GL_DEPTH_TEST);
+                skydome.Draw();
+
+                glEnable(GL_CULL_FACE);
+                glEnable(GL_DEPTH_TEST);
                 for (auto& entity : m_entities)
                         entity.Render();
 
                 map.Render();
-
-                skydome.Draw();
         }
 
         Texture2D& Renderer::GetTexture(const string& name)
@@ -115,10 +121,10 @@ namespace ORC_NAMESPACE
                 return meshes;
         }
 
-        void Renderer::View(const glm::mat4& view)
+        void Renderer::View(const glm::vec3& eye, const glm::vec3& lookat, const glm::vec3& up)
         {
-                m_global.view = view;
-                m_global.eye = -glm::transpose(glm::mat3(view)) * glm::vec3(view[3]);
+                m_global.view = glm::lookAt(eye, lookat, up);
+                m_global.eye = eye;
         }
 
         void Renderer::Projection(const glm::mat4& projection)

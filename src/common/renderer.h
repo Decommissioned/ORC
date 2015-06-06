@@ -57,7 +57,7 @@ namespace ORC_NAMESPACE
 
                 Entity& AddEntity(const string& meshName, const string& textureName);
 
-                void View(const glm::mat4& view);
+                void View(const glm::vec3& eye, const glm::vec3& lookat, const glm::vec3& up);
                 void Projection(const glm::mat4& projection);
 
                 void Update(float dt);
