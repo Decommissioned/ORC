@@ -20,11 +20,11 @@ namespace ORC_NAMESPACE
 
                 // Define specific preprocessor macros depending on the type of shader being compiled
                 if (type == GL_VERTEX_SHADER)
-                        src[0] = "#define _VERTEX_SHADER_\n";
+                        src[0] = "#version "ORC_GLSL_VERSION"\n" "\n#define _VERTEX_SHADER_\n";
                 else if (type == GL_FRAGMENT_SHADER)
-                        src[0] = "#define _FRAGMENT_SHADER_\n";
+                        src[0] = "#version "ORC_GLSL_VERSION"\n" "\n#define _FRAGMENT_SHADER_\n";
                 else
-                        src[0] = "";
+                        src[0] = "#version "ORC_GLSL_VERSION"\n";
 
                 src[1] = source.c_str();
 
