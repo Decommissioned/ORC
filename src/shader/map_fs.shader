@@ -24,6 +24,6 @@ void main()
         vec3 diffuse_light = vec3(max(dot(sun, normal), 0.0));
         
         vec4 tex = vec4(hack_light + diffuse_light, 1.0) * texture(sampler, interpolated.uv);
-        result = mix(tex, sky_color, interpolated.distance);
+        result = mix(tex, sky_color, interpolated.distance * 5.0);
         
 }

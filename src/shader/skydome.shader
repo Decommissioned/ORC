@@ -25,17 +25,23 @@ mat4 rot(vec3 axis, float angle)
                 0.0,                                0.0,                                0.0,                                1.0);
 }
 
+mat4 tran(vec3 pos)
+{
+	return mat4(1.0, 0.0, 0.0, 0.0,
+                0.0, 1.0, 0.0, 0.0,
+                0.0, 0.0, 1.0, 0.0,
+                pos.x, pos.y, pos.z, 1.0);
+}
+
 const vec3 j = vec3(0.0,1.0,0.0);
 
 void main()
 {
         // Since the W component = 1.0 perspective divide will not affect the values
-        vec4 cs = projection * view * rot(j, timestamp * 0.03) * vec4(position * (render_distance * 0.9) + eye, 1.0);
-        
-        gl_Position = cs.xyzw;
-        
+        vec4 cs = projection * view * tran(eye) * rot(j, timestamp * 0.03) * vec4(position, 1.0);
+        gl_Position = cs.xyww;
         output.uv = uv;
-        output.y = cs.y / cs.w;
+        output.y = 1.0;
 }
 
 #endif
