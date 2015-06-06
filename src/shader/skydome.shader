@@ -42,10 +42,12 @@ uniform sampler2D sampler;
 in vec2 v_uv;
 in float v_y;
 
+out vec4 color;
+
 void main()
 {
         float k = smoothstep(0.0, 0.01, (v_y + 1.0) * 0.5);
         vec4 tex = texture(sampler, v_uv);
-        gl_FragColor = mix(sky_color, tex, k);
+        color = mix(sky_color, tex, k);
 }
 #endif

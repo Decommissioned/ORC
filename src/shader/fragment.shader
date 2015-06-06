@@ -11,6 +11,8 @@ in vec3 v_normal;
 in vec2 v_uv;
 in float v_dist;
 
+out vec4 color;
+
 void main()
 {      
         // Directional light source (sun)  
@@ -27,5 +29,5 @@ void main()
         vec3 phong = ambient_light + diffuse_light + specular_light;        
         // Texturing fragment and calculating fog intensity
         vec4 tex = vec4(phong, 1.0) * texture(sampler, v_uv);
-        gl_FragColor = mix(tex, sky_color, v_dist * 5.0);        
+        color = mix(tex, sky_color, v_dist * 5.0);        
 }
