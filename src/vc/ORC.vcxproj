@@ -207,6 +207,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shader\fragment.shader" />
+    <None Include="..\shader\map_fs.shader" />
+    <None Include="..\shader\map_vs.shader" />
     <None Include="..\shader\master.shader" />
     <None Include="..\shader\skydome.shader" />
     <None Include="..\shader\vertex.shader" />

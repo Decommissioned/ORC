@@ -49,7 +49,7 @@ void KeyboardHandler(char key, bool down)
 {
         glm::vec3 last = interest;
 
-        const float speed = 0.1f;
+        const float speed = 0.99f;
         switch (key)
         {
         case 'w': interest.z += speed; break;
@@ -75,13 +75,14 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         glClearColor(r, g, b, 1.0f);
 
         std::vector<orc::Entity*> ents;
-        ents.reserve(101);
-        for (int i = 0; i < 100; i++)
+        const int count = 200;
+        ents.reserve(count + 1);
+        for (int i = 0; i < count; i++)
         {
                 ents.emplace_back(&renderer->AddEntity("sphere", "marble"));
         }
 
-        ents.emplace_back(&renderer->AddEntity("monkey", "dome"));
+        ents.emplace_back(&renderer->AddEntity("monkey", "jade"));
         orc::Entity* player = ents.back();
 
         PRINT_LAST_ERROR;
@@ -90,14 +91,14 @@ void Render(orc::uint32 windowID, float r, float g, float b)
         while (!DM::ExitRequested)
         {
                 //camera.Track(interest);
-                renderer->View(camera.View());
+                renderer->View(camera.Position(), camera.Lookat(), camera.Up());
 
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < count; i++)
                 {
-                        ents[i]->transform.Translate((-5 + i / 10) * 14 + 2.5, 4 * (sinf(i) + 1.0f), (-5 + i % 10) * 14);
+                        ents[i]->transform.Translate((-5 + i / 25) * 14 + 2.5 , 4 * (sinf(i) + 1.0f), (-5 + i % 25) * 14 );
                         ents[i]->transform.Rotate(0.0f, t * (i + 1.0f) / 100.0f, 0.0f);
                 }
-                auto pos = camera.Position();
+                auto pos = camera.Lookat();
                 player->transform.Translate(pos.x, pos.y, pos.z);
                 player->transform.Rotate(0.0f, camera.Roll(), 0.0f);
 

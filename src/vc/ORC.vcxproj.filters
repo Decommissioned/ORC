@@ -199,5 +199,11 @@
     <None Include="..\shader\skydome.shader">
       <Filter>Resource Files\shader</Filter>
     </None>
+    <None Include="..\shader\map_fs.shader">
+      <Filter>Resource Files\shader</Filter>
+    </None>
+    <None Include="..\shader\map_vs.shader">
+      <Filter>Resource Files\shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
