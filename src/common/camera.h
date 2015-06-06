@@ -19,6 +19,8 @@ namespace ORC_NAMESPACE
 
                 glm::mat4 View() const;
                 glm::vec3 Position() const;
+                glm::vec3 Lookat() const;
+                glm::vec3 Up() const;
 
                 float Roll() const;
                 float Pitch() const;

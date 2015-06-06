@@ -22,7 +22,9 @@ namespace ORC_NAMESPACE
 
         glm::vec3 Camera::Position() const
         {
-                return m_lookat - glm::rotate(m_direction, m_roll, up);
+                glm::vec3 eye = m_lookat - glm::rotate(m_direction, m_roll, up) * m_distance;
+                eye.y = tanf(m_pitch);
+                return eye;
         }
 
         void Camera::Set(const glm::vec3& lookat)
@@ -77,6 +79,16 @@ namespace ORC_NAMESPACE
         float Camera::Pitch() const
         {
                 return m_pitch;
+        }
+
+        glm::vec3 Camera::Lookat() const
+        {
+                return m_lookat;
+        }
+
+        glm::vec3 Camera::Up() const
+        {
+                return up;
         }
 
 };
