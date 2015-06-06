@@ -27,6 +27,7 @@ namespace ORC_NAMESPACE
         {
                 glEnable(GL_DEPTH_TEST);
                 glDepthFunc(GL_LESS);
+                glCullFace(GL_BACK);
         }
 
         //////////////////////////////////////////////////////////////////////////
@@ -110,8 +111,8 @@ namespace ORC_NAMESPACE
                         if (SDL_InitSubSystem(SDL_INIT_VIDEO) != 0)
                                 throw Error::SDL_VIDEO_INITIALIZATION;
 
-                        // Requires OpenGL 3.0 or better
-                        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+                        // Requires OpenGL 2.0 or better
+                        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
                         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
                         SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
