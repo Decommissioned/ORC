@@ -10,6 +10,7 @@ using ErrorCode = uint16_t;
 #include <vector>
 
 #define ORC_NAMESPACE orc
+#define ORC_GLSL_VERSION "150"
 
 namespace ORC_NAMESPACE
 {
